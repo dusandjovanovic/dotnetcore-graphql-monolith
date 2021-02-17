@@ -4,4 +4,20 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="graphiql" Version="2.0.0" />
+      <PackageReference Include="GraphQL" Version="3.3.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GraphQL.Core\GraphQL.Core.csproj" />
+      <ProjectReference Include="..\GraphQL.Data\GraphQL.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="wwwroot\**" />
+        <Content Remove="wwwroot\**" />
+        <EmbeddedResource Remove="wwwroot\**" />
+        <None Remove="wwwroot\**" />
+    </ItemGroup>
 </Project>
