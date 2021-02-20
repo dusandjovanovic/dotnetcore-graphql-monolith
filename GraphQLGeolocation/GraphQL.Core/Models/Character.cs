@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+
+namespace GraphQL.Core.Models
+{
+    public class Character
+    {
+        public Character()
+        {
+            this.AppearsIn = new List<Episode>();
+            this.Friends = new List<Guid>();
+        }
+        
+        public Guid Id { get; set; }
+        
+        public string Name { get; set; }
+        
+        public List<Guid> Friends { get; set; }
+        
+        public List<Episode> AppearsIn { get; set; }
+        
+        public DateTimeOffset Created { get; set; }
+        
+        public DateTimeOffset Modified { get; set; }
+    }
+}

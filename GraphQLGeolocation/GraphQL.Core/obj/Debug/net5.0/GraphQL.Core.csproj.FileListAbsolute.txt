@@ -1,0 +1,12 @@
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/bin/Debug/net5.0/GraphQL.Core.deps.json
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/bin/Debug/net5.0/GraphQL.Core.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/bin/Debug/net5.0/ref/GraphQL.Core.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/bin/Debug/net5.0/GraphQL.Core.pdb
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/obj/Debug/net5.0/GraphQL.Core.csprojAssemblyReference.cache
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/obj/Debug/net5.0/GraphQL.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/obj/Debug/net5.0/GraphQL.Core.AssemblyInfoInputs.cache
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/obj/Debug/net5.0/GraphQL.Core.AssemblyInfo.cs
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/obj/Debug/net5.0/GraphQL.Core.csproj.CoreCompileInputs.cache
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/obj/Debug/net5.0/GraphQL.Core.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/obj/Debug/net5.0/ref/GraphQL.Core.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Core/obj/Debug/net5.0/GraphQL.Core.pdb

@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GraphiQl;
-using GraphQL.API.Helpers;
-using GraphQL.API.Models;
-using GraphQL.Core.Data;
-using GraphQL.Data.Helpers;
-using GraphQL.Data.Repositories;
-using GraphQL.Types;
+using Boxed.AspNetCore;
+using GraphQL.API.Constants;
+using GraphQL.API.Extensions;
+using GraphQL.API.Schemas;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
+using GraphQL.Server.Ui.Voyager;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,47 +16,65 @@ namespace GraphQL.API
 {
     public class Startup
     {
-        private IConfiguration Configuration { get; set; }
-        
-        public Startup(IConfiguration configuration)
+        private readonly IConfiguration configuration;
+        private readonly IWebHostEnvironment webHostEnvironment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
+            this.webHostEnvironment = webHostEnvironment;
         }
-        
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddHttpContextAccessor();
 
-            services.AddSingleton<ContextServiceLocator>();
-            services.AddDbContext<StatsContext>(options =>
-                options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
+        public virtual void ConfigureServices(IServiceCollection services) =>
+            services
+                .AddCustomCaching()
+                .AddCustomCors()
+                .AddCustomOptions(this.configuration)
+                .AddCustomRouting()
+                .AddCustomResponseCompression(this.configuration)
+                .AddCustomHealthChecks()
+                .AddHttpContextAccessor()
+                .AddServerTiming()
+                .AddControllers()
+                .AddCustomJsonOptions(this.webHostEnvironment)
+                .AddCustomMvcOptions(this.configuration)
+                .Services
+                .AddCustomGraphQL(this.configuration, this.webHostEnvironment)
+                //.AddCustomGraphQLAuthorization()
+                .AddProjectServices()
+                .AddProjectRepositories()
+                .AddProjectSchemas();
 
-            services.AddTransient<IPlayerRepository, PlayerRepository>();
-            services.AddTransient<ISkaterStatisticRepository, SkaterStatisticRepository>();
-
-            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            services.AddSingleton<StatsQuery>();
-            services.AddSingleton<StatsMutation>();
-            services.AddSingleton<PlayerType>();
-            services.AddSingleton<PlayerInputType>();
-            services.AddSingleton<SkaterStatisticType>();
-            services.AddSingleton<ISchema, StatsSchema>();
-        }
-        
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
-            });
-
-            app.UseGraphiQl();
-        }
+        public virtual void Configure(IApplicationBuilder application) =>
+            application
+                .UseIf(
+                    this.webHostEnvironment.IsDevelopment(),
+                    x => x.UseServerTiming())
+                .UseResponseCompression()
+                .UseIf(
+                    this.webHostEnvironment.IsDevelopment(),
+                    x => x.UseDeveloperExceptionPage())
+                .UseRouting()
+                .UseCors(CorsPolicyName.AllowAny)
+                .UseStaticFilesWithCacheControl()
+                .UseCustomSerilogRequestLogging()
+                .UseEndpoints(
+                    builder =>
+                    {
+                        builder
+                            .MapHealthChecks("/status")
+                            .RequireCors(CorsPolicyName.AllowAny);
+                        builder
+                            .MapHealthChecks("/status/self", new HealthCheckOptions() {Predicate = _ => false})
+                            .RequireCors(CorsPolicyName.AllowAny);
+                    })
+                .UseWebSockets()
+                .UseGraphQLWebSockets<MainSchema>()
+                .UseGraphQL<MainSchema>()
+                .UseIf(
+                    this.webHostEnvironment.IsDevelopment(),
+                    x => x
+                        .UseGraphQLPlayground(new GraphQLPlaygroundOptions() {Path = "/"})
+                        .UseGraphQLVoyager(new GraphQLVoyagerOptions() {Path = "/voyager"}));
     }
 }
