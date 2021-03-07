@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GraphQL.API.Types.Location;
 using GraphQL.API.Types.Tag;
 using GraphQL.Core.Data;
 using GraphQL.Core.Models;
@@ -19,7 +20,7 @@ namespace GraphQL.API.Types.Place
             Field(x => x.Name)
                 .Description("The name of the place");
             
-            Field(x => x.Location)
+            Field(x => x.Location, type: typeof(LocationObject))
                 .Description("The location of the place");
             
             FieldAsync<ListGraphType<TagInterface>, List<Core.Models.Tag>>(

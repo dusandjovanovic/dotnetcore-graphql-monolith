@@ -1,3 +1,4 @@
+using GraphQL.API.Types.Location;
 using GraphQL.Types;
 
 namespace GraphQL.API.Types.Tag
@@ -12,7 +13,7 @@ namespace GraphQL.API.Types.Tag
             Field(x => x.Description)
                 .Description("The name of the place");
             
-            Field(x => x.Location)
+            Field(x => x.Location, type: typeof(LocationObject))
                 .Description("The places location");
         }
     }

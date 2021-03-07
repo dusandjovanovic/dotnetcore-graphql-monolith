@@ -676,6 +676,20 @@
           "lib/net5.0/Microsoft.AspNetCore.AzureAppServicesIntegration.dll": {}
         }
       },
+      "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore/5.0.3": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "5.0.3"
+        },
+        "runtime": {
+          "lib/net5.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll": {
+            "assemblyVersion": "5.0.3.0",
+            "fileVersion": "5.0.321.7303"
+          }
+        },
+        "compile": {
+          "lib/net5.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Hosting/2.2.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Hosting.Abstractions": "2.2.0",
@@ -2701,6 +2715,7 @@
           "GraphQL.Server.Transports.WebSockets": "3.4.0",
           "GraphQL.Server.Ui.Playground": "3.4.0",
           "GraphQL.Server.Ui.Voyager": "3.4.0",
+          "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "5.0.0",
@@ -4551,6 +4566,13 @@
       "sha512": "sha512-sM501x1+3RSX3m+XRvBoEgoAbW9UbXIyXkU/+MRLHBng46ygpuxMyM+ZpNlUjBYompQ8z+G/NSGvLqVWbHA7fg==",
       "path": "microsoft.aspnetcore.azureappservicesintegration/5.0.3",
       "hashPath": "microsoft.aspnetcore.azureappservicesintegration.5.0.3.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore/5.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FB1oDH82DeRv+dKZZAB1ib7njpSnTDd5vwTtZJQ/zZXLYj7yrL8jM7RZeKBxKRkomynrKLq5SfR1UhhjKlrO7g==",
+      "path": "microsoft.aspnetcore.diagnostics.entityframeworkcore/5.0.3",
+      "hashPath": "microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.3.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Hosting/2.2.0": {
       "type": "package",

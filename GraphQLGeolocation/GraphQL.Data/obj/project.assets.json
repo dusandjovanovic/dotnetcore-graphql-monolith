@@ -128,6 +128,21 @@
           "lib/netstandard2.0/Humanizer.dll": {}
         }
       },
+      "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore/5.0.3": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "5.0.3"
+        },
+        "compile": {
+          "lib/net5.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.Hosting.Abstractions/2.0.2": {
         "type": "package",
         "dependencies": {
@@ -2510,6 +2525,21 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore/5.0.3": {
+      "sha512": "FB1oDH82DeRv+dKZZAB1ib7njpSnTDd5vwTtZJQ/zZXLYj7yrL8jM7RZeKBxKRkomynrKLq5SfR1UhhjKlrO7g==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.diagnostics.entityframeworkcore/5.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net5.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll",
+        "lib/net5.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.xml",
+        "microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.3.nupkg.sha512",
+        "microsoft.aspnetcore.diagnostics.entityframeworkcore.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Hosting.Abstractions/2.0.2": {
@@ -8129,6 +8159,7 @@
       "GraphQL.Server.Transports.WebSockets >= 3.4.0",
       "GraphQL.Server.Ui.Playground >= 3.4.0",
       "GraphQL.Server.Ui.Voyager >= 3.4.0",
+      "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 5.0.3",
       "Microsoft.EntityFrameworkCore >= 5.0.3",
       "Microsoft.EntityFrameworkCore.Design >= 5.0.3",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.3",
@@ -8194,6 +8225,10 @@
             "target": "Package",
             "version": "[3.4.0, )"
           },
+          "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[5.0.3, )"
+          },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "[5.0.3, )"
@@ -8232,6 +8267,9 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }

@@ -4,12 +4,14 @@ using Boxed.AspNetCore;
 using GraphQL.API.Constants;
 using GraphQL.API.Helpers;
 using GraphQL.API.Options;
+using GraphQL.Data.Context;
 using GraphQL.Server;
 using GraphQL.Server.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,6 +20,11 @@ namespace GraphQL.API.Extensions
 {
     internal static class CustomServiceCollectionExtensions
     {
+        public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration) =>
+            services
+                .AddDbContext<ApplicationContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")))
+                .AddDatabaseDeveloperPageExceptionFilter();
+        
         public static IServiceCollection AddCustomCaching(this IServiceCollection services) =>
             services
                 .AddMemoryCache()

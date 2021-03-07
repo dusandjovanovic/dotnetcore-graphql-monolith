@@ -27,19 +27,20 @@ namespace GraphQL.API
 
         public virtual void ConfigureServices(IServiceCollection services) =>
             services
+                .AddDbContext(configuration)
                 .AddCustomCaching()
                 .AddCustomCors()
-                .AddCustomOptions(this.configuration)
+                .AddCustomOptions(configuration)
                 .AddCustomRouting()
-                .AddCustomResponseCompression(this.configuration)
+                .AddCustomResponseCompression(configuration)
                 .AddCustomHealthChecks()
                 .AddHttpContextAccessor()
                 .AddServerTiming()
                 .AddControllers()
-                .AddCustomJsonOptions(this.webHostEnvironment)
-                .AddCustomMvcOptions(this.configuration)
+                .AddCustomJsonOptions(webHostEnvironment)
+                .AddCustomMvcOptions(configuration)
                 .Services
-                .AddCustomGraphQL(this.configuration, this.webHostEnvironment)
+                .AddCustomGraphQL(configuration, webHostEnvironment)
                 //.AddCustomGraphQLAuthorization()
                 .AddProjectServices()
                 .AddProjectRepositories()

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ym4WwW+ZKwLG1O4zZfyDIfeckH3/+LIViPywdtgeZcbnmXSyLmNm8BS0fRExUXbN9ZrdB+Mo9bTvZq1Tx9XpXg==",
+  "dgSpecHash": "SB1LmzLa//jvcmsW97LjULN6daF4VJLdzi+WLM/v/1UP4aP9wP3lLg7RYYr7+jXRk/qSnRHSRpOHk9yl+FW79g==",
   "success": true,
   "projectFilePath": "/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/GraphQL.API.csproj",
   "expectedPackageFiles": [
@@ -23,6 +23,7 @@
     "/Users/macintosh/.nuget/packages/microsoft.applicationinsights.windowsserver.telemetrychannel/2.17.0/microsoft.applicationinsights.windowsserver.telemetrychannel.2.17.0.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.applicationinsights.hostingstartup/2.2.0/microsoft.aspnetcore.applicationinsights.hostingstartup.2.2.0.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.azureappservicesintegration/5.0.3/microsoft.aspnetcore.azureappservicesintegration.5.0.3.nupkg.sha512",
+    "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.diagnostics.entityframeworkcore/5.0.3/microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.3.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.hosting/2.2.0/microsoft.aspnetcore.hosting.2.2.0.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.hosting.abstractions/2.2.0/microsoft.aspnetcore.hosting.abstractions.2.2.0.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.hosting.server.abstractions/2.2.0/microsoft.aspnetcore.hosting.server.abstractions.2.2.0.nupkg.sha512",

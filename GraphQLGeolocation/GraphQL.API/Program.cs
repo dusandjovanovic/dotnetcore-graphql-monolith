@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Boxed.AspNetCore;
 using GraphQL.API.Options;
+using GraphQL.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,21 @@ namespace GraphQL.API
     public class Program
     {
         public static Task<int> Main(string[] args) => LogAndRunAsync(CreateHostBuilder(args).Build());
+        
+        private static void CreateDbIfNotExists(IHost host, ILogger logger)
+        {
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<ApplicationContext>();
+                ApplicationInitializer.Initialize(context);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "An error occurred creating the DB.");
+            }
+        }
 
         public static async Task<int> LogAndRunAsync(IHost host)
         {
@@ -30,6 +46,8 @@ namespace GraphQL.API
             hostEnvironment.ApplicationName = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>().Product;
 
             Log.Logger = CreateLogger(host);
+
+            CreateDbIfNotExists(host, Log.Logger);
 
             try
             {
