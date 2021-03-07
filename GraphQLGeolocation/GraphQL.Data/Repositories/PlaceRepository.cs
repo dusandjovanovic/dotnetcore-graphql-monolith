@@ -23,7 +23,7 @@ namespace GraphQL.Data.Repositories
             
             place.Id = Guid.NewGuid();
             Database.Places.Add(place);
-            // whenHumanCreated.OnNext(human);
+            // WhenPlaceCreated.OnNext(human);
 
             return Task.FromResult(place);
         }

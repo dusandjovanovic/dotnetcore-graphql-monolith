@@ -23,7 +23,7 @@ namespace GraphQL.Data.Repositories
             
             account.Id = Guid.NewGuid();
             Database.Accounts.Add(account);
-            // whenHumanCreated.OnNext(human);
+            // WhenAccountCreated.OnNext(human);
 
             return Task.FromResult(account);
         }

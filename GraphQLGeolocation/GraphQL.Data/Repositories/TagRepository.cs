@@ -23,7 +23,7 @@ namespace GraphQL.Data.Repositories
             
             tag.Id = Guid.NewGuid();
             Database.Tags.Add(tag);
-            // whenHumanCreated.OnNext(human);
+            // WhenTagCreated.OnNext(human);
 
             return Task.FromResult(tag);
         }
