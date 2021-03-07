@@ -14,8 +14,9 @@ namespace GraphQL.API.Extensions
         
         public static IServiceCollection AddProjectRepositories(this IServiceCollection services) =>
             services
-                .AddSingleton<IDroidRepository, DroidRepository>()
-                .AddSingleton<IHumanRepository, HumanRepository>();
+                .AddSingleton<IAccountRepository, AccountRepository>()
+                .AddSingleton<ITagRepository, TagRepository>()
+                .AddSingleton<IPlaceRepository, PlaceRepository>();
         
         public static IServiceCollection AddProjectSchemas(this IServiceCollection services) =>
             services
