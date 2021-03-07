@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Boxed.AspNetCore;
-using GraphQL.API.Types;
+using GraphQL.API.Types.Account;
+using GraphQL.API.Types.Place;
+using GraphQL.API.Types.Tag;
 using GraphQL.Builders;
 using GraphQL.Core.Data;
 using GraphQL.Core.Models;
@@ -40,49 +42,77 @@ namespace GraphQL.API.Schemas
      */
     public class QueryObject : ObjectGraphType<object>
     {
-        public QueryObject(IDroidRepository droidRepository, IHumanRepository humanRepository)
+        public QueryObject(IAccountRepository accountRepository, IPlaceRepository placeRepository, 
+            ITagRepository tagRepository)
         {
             Name = "Query";
             Description = "The query type, represents all of the entry points into our object graph.";
 
-            FieldAsync<DroidObject, Droid>(
-                "droid",
-                "Get a droid by its unique identifier.",
+            FieldAsync<AccountObject, Account>(
+                "account",
+                "Get an account by its unique identifier.",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>>
                     {
                         Name = "id",
-                        Description = "The unique identifier of the droid.",
+                        Description = "The unique identifier of the account.",
                     }),
                 resolve: context =>
-                    droidRepository.GetDroidAsync(
-                        context.GetArgument("id", defaultValue: new Guid("1ae34c3b-c1a0-4b7b-9375-c5a221d49e68")),
+                    accountRepository.GetAccountAsync(
+                        context.GetArgument("id", defaultValue: new Guid()),
                         context.CancellationToken));
             
-            FieldAsync<HumanObject, Human>(
-                "human",
-                "Get a human by its unique identifier.",
+            FieldAsync<PlaceObject, Place>(
+                "place",
+                "Get a place by its unique identifier.",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>>()
                     {
                         Name = "id",
-                        Description = "The unique identifier of the human.",
+                        Description = "The unique identifier of the place.",
                     }),
-                resolve: context => humanRepository.GetHumanAsync(
-                    context.GetArgument("id", defaultValue: new Guid("94fbd693-2027-4804-bf40-ed427fe76fda")),
+                resolve: context => placeRepository.GetPlaceAsync(
+                    context.GetArgument("id", defaultValue: new Guid()),
+                    context.CancellationToken));
+            
+            FieldAsync<TagObject, Tag>(
+                "tag",
+                "Get a tag by its unique identifier.",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>>()
+                    {
+                        Name = "id",
+                        Description = "The unique identifier of the tag.",
+                    }),
+                resolve: context => tagRepository.GetTagAsync(
+                    context.GetArgument("id", defaultValue: new Guid()),
                     context.CancellationToken));
 
-            Connection<DroidObject>()
-                .Name("droids")
-                .Description("Gets pages of droids.")
+            Connection<AccountObject>()
+                .Name("accounts")
+                .Description("Gets pages of accounts.")
                 .Bidirectional()
                 .PageSize(MaxPageSize)
-                .ResolveAsync(context => ResolveConnectionAsync(droidRepository, context));
+                .ResolveAsync(context => ResolveConnectionAsync(accountRepository, context));
+            
+            Connection<PlaceObject>()
+                .Name("places")
+                .Description("Gets pages of places.")
+                .Bidirectional()
+                .PageSize(MaxPageSize)
+                .ResolveAsync(context => ResolveConnectionAsync(placeRepository, context));
+            
+            Connection<TagObject>()
+                .Name("tags")
+                .Description("Gets pages of tags.")
+                .Bidirectional()
+                .PageSize(MaxPageSize)
+                .ResolveAsync(context => ResolveConnectionAsync(tagRepository, context));
         }
         
         private const int MaxPageSize = 10;
         
-        private static async Task<object> ResolveConnectionAsync(IDroidRepository droidRepository, 
+        private static async Task<object> ResolveConnectionAsync(IAccountRepository accountRepository, 
             ResolveConnectionContext<object> context)
         {
             var first = context.First;
@@ -91,25 +121,25 @@ namespace GraphQL.API.Schemas
             var beforeCursor = Cursor.FromCursor<DateTime?>(context.Before);
             var cancellationToken = context.CancellationToken;
 
-            var getDroidsTask = GetDroidsAsync(droidRepository, first, afterCursor, last, beforeCursor, cancellationToken);
-            var getHasNextPageTask = GetHasNextPageAsync(droidRepository, first, afterCursor, cancellationToken);
-            var getHasPreviousPageTask = GetHasPreviousPageAsync(droidRepository, last, beforeCursor, cancellationToken);
-            var totalCountTask = droidRepository.GetTotalCountAsync(cancellationToken);
+            var getAccountsTask = GetAccountsAsync(accountRepository, first, afterCursor, last, beforeCursor, cancellationToken);
+            var getHasNextPageTask = GetHasNextPageAsync(accountRepository, first, afterCursor, cancellationToken);
+            var getHasPreviousPageTask = GetHasPreviousPageAsync(accountRepository, last, beforeCursor, cancellationToken);
+            var totalCountTask = accountRepository.GetTotalCountAsync(cancellationToken);
 
-            await Task.WhenAll(getDroidsTask, getHasNextPageTask, getHasPreviousPageTask, totalCountTask).ConfigureAwait(false);
-            var droids = await getDroidsTask.ConfigureAwait(false);
+            await Task.WhenAll(getAccountsTask, getHasNextPageTask, getHasPreviousPageTask, totalCountTask).ConfigureAwait(false);
+            var accounts = await getAccountsTask.ConfigureAwait(false);
             var hasNextPage = await getHasNextPageTask.ConfigureAwait(false);
             var hasPreviousPage = await getHasPreviousPageTask.ConfigureAwait(false);
             var totalCount = await totalCountTask.ConfigureAwait(false);
-            var (firstCursor, lastCursor) = Cursor.GetFirstAndLastCursor(droids, x => x.Manufactured);
+            var (firstCursor, lastCursor) = Cursor.GetFirstAndLastCursor(accounts, x => x.Created);
 
-            return new Connection<Droid>()
+            return new Connection<Account>()
             {
-                Edges = droids
+                Edges = accounts
                     .Select(x =>
-                        new Edge<Droid>()
+                        new Edge<Account>()
                         {
-                            Cursor = Cursor.ToCursor(x.Manufactured),
+                            Cursor = Cursor.ToCursor(x.Created),
                             Node = x,
                         })
                     .ToList(),
@@ -123,36 +153,184 @@ namespace GraphQL.API.Schemas
                 TotalCount = totalCount,
             };
         }
+        
+          private static async Task<object> ResolveConnectionAsync(IPlaceRepository placeRepository, 
+            ResolveConnectionContext<object> context)
+        {
+            var first = context.First;
+            var afterCursor = Cursor.FromCursor<DateTime?>(context.After);
+            var last = context.Last;
+            var beforeCursor = Cursor.FromCursor<DateTime?>(context.Before);
+            var cancellationToken = context.CancellationToken;
 
-        private static Task<List<Droid>> GetDroidsAsync(IDroidRepository droidRepository, int? first, DateTime? afterCursor,
+            var gePlacesTask = GetPlacesAsync(placeRepository, first, afterCursor, last, beforeCursor, cancellationToken);
+            var getHasNextPageTask = GetHasNextPageAsync(placeRepository, first, afterCursor, cancellationToken);
+            var getHasPreviousPageTask = GetHasPreviousPageAsync(placeRepository, last, beforeCursor, cancellationToken);
+            var totalCountTask = placeRepository.GetTotalCountAsync(cancellationToken);
+
+            await Task.WhenAll(gePlacesTask, getHasNextPageTask, getHasPreviousPageTask, totalCountTask).ConfigureAwait(false);
+            var accounts = await gePlacesTask.ConfigureAwait(false);
+            var hasNextPage = await getHasNextPageTask.ConfigureAwait(false);
+            var hasPreviousPage = await getHasPreviousPageTask.ConfigureAwait(false);
+            var totalCount = await totalCountTask.ConfigureAwait(false);
+            var (firstCursor, lastCursor) = Cursor.GetFirstAndLastCursor(accounts, x => x.Created);
+
+            return new Connection<Place>()
+            {
+                Edges = accounts
+                    .Select(x =>
+                        new Edge<Place>()
+                        {
+                            Cursor = Cursor.ToCursor(x.Created),
+                            Node = x,
+                        })
+                    .ToList(),
+                PageInfo = new PageInfo()
+                {
+                    HasNextPage = hasNextPage,
+                    HasPreviousPage = hasPreviousPage,
+                    StartCursor = firstCursor,
+                    EndCursor = lastCursor,
+                },
+                TotalCount = totalCount,
+            };
+        }
+          
+                private static async Task<object> ResolveConnectionAsync(ITagRepository tagRepository, 
+            ResolveConnectionContext<object> context)
+        {
+            var first = context.First;
+            var afterCursor = Cursor.FromCursor<DateTime?>(context.After);
+            var last = context.Last;
+            var beforeCursor = Cursor.FromCursor<DateTime?>(context.Before);
+            var cancellationToken = context.CancellationToken;
+
+            var getTagsTask = GetTagsAsync(tagRepository, first, afterCursor, last, beforeCursor, cancellationToken);
+            var getHasNextPageTask = GetHasNextPageAsync(tagRepository, first, afterCursor, cancellationToken);
+            var getHasPreviousPageTask = GetHasPreviousPageAsync(tagRepository, last, beforeCursor, cancellationToken);
+            var totalCountTask = tagRepository.GetTotalCountAsync(cancellationToken);
+
+            await Task.WhenAll(getTagsTask, getHasNextPageTask, getHasPreviousPageTask, totalCountTask).ConfigureAwait(false);
+            var accounts = await getTagsTask.ConfigureAwait(false);
+            var hasNextPage = await getHasNextPageTask.ConfigureAwait(false);
+            var hasPreviousPage = await getHasPreviousPageTask.ConfigureAwait(false);
+            var totalCount = await totalCountTask.ConfigureAwait(false);
+            var (firstCursor, lastCursor) = Cursor.GetFirstAndLastCursor(accounts, x => x.Created);
+
+            return new Connection<Tag>()
+            {
+                Edges = accounts
+                    .Select(x =>
+                        new Edge<Tag>()
+                        {
+                            Cursor = Cursor.ToCursor(x.Created),
+                            Node = x,
+                        })
+                    .ToList(),
+                PageInfo = new PageInfo()
+                {
+                    HasNextPage = hasNextPage,
+                    HasPreviousPage = hasPreviousPage,
+                    StartCursor = firstCursor,
+                    EndCursor = lastCursor,
+                },
+                TotalCount = totalCount,
+            };
+        }
+        
+         private static Task<List<Account>> GetAccountsAsync(IAccountRepository accountRepository, int? first, DateTime? afterCursor,
             int? last, DateTime? beforeCursor, CancellationToken cancellationToken)
         {
-            Task<List<Droid>> getDroidsTask;
+            Task<List<Account>> getAccountsTask;
             if (first.HasValue)
             {
-                getDroidsTask = droidRepository.GetDroidsAsync(first, afterCursor, cancellationToken);
+                getAccountsTask = accountRepository.GetAccountsAsync(first, afterCursor, cancellationToken);
             }
             else
             {
-                getDroidsTask = droidRepository.GetDroidsReverseAsync(last, beforeCursor, cancellationToken);
+                getAccountsTask = accountRepository.GetAccountsReverseAsync(last, beforeCursor, cancellationToken);
             }
 
-            return getDroidsTask;
+            return getAccountsTask;
         }
 
-        private static Task<bool> GetHasNextPageAsync(IDroidRepository droidRepository, int? first, DateTime? afterCursor,
+        private static Task<bool> GetHasNextPageAsync(IAccountRepository accountRepository, int? first, DateTime? afterCursor,
             CancellationToken cancellationToken)
         {
             return first.HasValue ?
-                droidRepository.GetHasNextPageAsync(first, afterCursor, cancellationToken) 
+                accountRepository.GetHasNextPageAsync(first, afterCursor, cancellationToken) 
                 : Task.FromResult(false);
         }
 
-        private static Task<bool> GetHasPreviousPageAsync(IDroidRepository droidRepository, int? last,
+        private static Task<bool> GetHasPreviousPageAsync(IAccountRepository accountRepository, int? last,
             DateTime? beforeCursor, CancellationToken cancellationToken)
         {
             return last.HasValue 
-                ? droidRepository.GetHasPreviousPageAsync(last, beforeCursor, cancellationToken) 
+                ? accountRepository.GetHasPreviousPageAsync(last, beforeCursor, cancellationToken) 
+                : Task.FromResult(false);
+        }
+        
+        private static Task<List<Place>> GetPlacesAsync(IPlaceRepository placeRepository, int? first, DateTime? afterCursor,
+            int? last, DateTime? beforeCursor, CancellationToken cancellationToken)
+        {
+            Task<List<Place>> getPlacesTask;
+            if (first.HasValue)
+            {
+                getPlacesTask = placeRepository.GetPlacesAsync(first, afterCursor, cancellationToken);
+            }
+            else
+            {
+                getPlacesTask = placeRepository.GetPlacesReverseAsync(last, beforeCursor, cancellationToken);
+            }
+
+            return getPlacesTask;
+        }
+
+        private static Task<bool> GetHasNextPageAsync(IPlaceRepository placeRepository, int? first, DateTime? afterCursor,
+            CancellationToken cancellationToken)
+        {
+            return first.HasValue ?
+                placeRepository.GetHasNextPageAsync(first, afterCursor, cancellationToken) 
+                : Task.FromResult(false);
+        }
+
+        private static Task<bool> GetHasPreviousPageAsync(IPlaceRepository placeRepository, int? last,
+            DateTime? beforeCursor, CancellationToken cancellationToken)
+        {
+            return last.HasValue 
+                ? placeRepository.GetHasPreviousPageAsync(last, beforeCursor, cancellationToken) 
+                : Task.FromResult(false);
+        }
+
+        private static Task<List<Tag>> GetTagsAsync(ITagRepository tagRepository, int? first, DateTime? afterCursor,
+            int? last, DateTime? beforeCursor, CancellationToken cancellationToken)
+        {
+            Task<List<Tag>> getTagsTask;
+            if (first.HasValue)
+            {
+                getTagsTask = tagRepository.GetTagsAsync(first, afterCursor, cancellationToken);
+            }
+            else
+            {
+                getTagsTask = tagRepository.GetTagsReverseAsync(last, beforeCursor, cancellationToken);
+            }
+
+            return getTagsTask;
+        }
+
+        private static Task<bool> GetHasNextPageAsync(ITagRepository tagRepository, int? first, DateTime? afterCursor,
+            CancellationToken cancellationToken)
+        {
+            return first.HasValue ?
+                tagRepository.GetHasNextPageAsync(first, afterCursor, cancellationToken) 
+                : Task.FromResult(false);
+        }
+
+        private static Task<bool> GetHasPreviousPageAsync(ITagRepository tagRepository, int? last,
+            DateTime? beforeCursor, CancellationToken cancellationToken)
+        {
+            return last.HasValue 
+                ? tagRepository.GetHasPreviousPageAsync(last, beforeCursor, cancellationToken) 
                 : Task.FromResult(false);
         }
     }
