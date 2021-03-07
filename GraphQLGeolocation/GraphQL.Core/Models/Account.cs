@@ -8,8 +8,8 @@ namespace GraphQL.Core.Models
         public Account()
         {
             this.Friends = new List<Guid>();
-            this.AppearsIn = new List<Place>();
-            this.SharedTags = new List<Tag>();
+            this.AppearsIn = new List<Guid>();
+            this.SharedTags = new List<Guid>();
         }
         
         public Guid Id { get; set; }
@@ -20,9 +20,11 @@ namespace GraphQL.Core.Models
         
         public List<Guid> Friends { get; set; }
         
-        public List<Place> AppearsIn { get; set; }
+        public List<Guid> AppearsIn { get; set; }
         
-        public List<Tag> SharedTags { get; set; }
+        public List<Guid> SharedTags { get; set; }
+        
+        public DateTime DateOfBirth { get; set; }
         
         public DateTimeOffset Created { get; set; }
         

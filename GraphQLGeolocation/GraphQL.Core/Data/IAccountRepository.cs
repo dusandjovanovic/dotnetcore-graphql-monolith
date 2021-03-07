@@ -13,6 +13,10 @@ namespace GraphQL.Core.Data
         Task<Account> AddAccountAsync(Account account, CancellationToken cancellationToken);
 
         Task<List<Account>> GetFriendsAsync(Account account, CancellationToken cancellationToken);
+        
+        Task<List<Tag>> GetSharedTagsAsync(Account account, CancellationToken cancellationToken);
+        
+        Task<List<Place>> GetAppearsInAsync(Account account, CancellationToken cancellationToken);
 
         Task<Account> GetAccountAsync(Guid id, CancellationToken cancellationToken);
 

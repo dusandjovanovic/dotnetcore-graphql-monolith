@@ -12,7 +12,7 @@ namespace GraphQL.Core.Data
 
         Task<Place> AddPlaceAsync(Place place, CancellationToken cancellationToken);
 
-        Task<List<Place>> GetTagsAsync(Place place, CancellationToken cancellationToken);
+        Task<List<Tag>> GetTagsAsync(Place place, CancellationToken cancellationToken);
 
         Task<Place> GetPlaceAsync(Guid id, CancellationToken cancellationToken);
 

@@ -28,14 +28,14 @@ namespace GraphQL.Data.Repositories
             return Task.FromResult(place);
         }
 
-        public Task<List<Place>> GetTagsAsync(Place place, CancellationToken cancellationToken)
+        public Task<List<Tag>> GetTagsAsync(Place place, CancellationToken cancellationToken)
         {
             if (place is null)
             {
                 throw new ArgumentNullException(nameof(place));
             }
 
-            return Task.FromResult(Database.Places
+            return Task.FromResult(Database.Tags
                 .Where(x => place.Tags.Contains(x.Id)).ToList());
         }
 

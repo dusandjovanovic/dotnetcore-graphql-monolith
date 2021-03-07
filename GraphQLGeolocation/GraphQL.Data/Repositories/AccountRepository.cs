@@ -39,6 +39,28 @@ namespace GraphQL.Data.Repositories
                 .Where(x => account.Friends.Contains(x.Id)).ToList());
         }
 
+        public Task<List<Tag>> GetSharedTagsAsync(Account account, CancellationToken cancellationToken)
+        {
+            if (account is null)
+            {
+                throw new ArgumentNullException(nameof(account));
+            }
+            
+            return Task.FromResult(Database.Tags
+                .Where(x => account.SharedTags.Contains(x.Id)).ToList());
+        }
+
+        public Task<List<Place>> GetAppearsInAsync(Account account, CancellationToken cancellationToken)
+        {
+            if (account is null)
+            {
+                throw new ArgumentNullException(nameof(account));
+            }
+            
+            return Task.FromResult(Database.Places
+                .Where(x => account.AppearsIn.Contains(x.Id)).ToList());
+        }
+
         public Task<Account> GetAccountAsync(Guid id, CancellationToken cancellationToken)
         {
             return Task.FromResult(Database.Accounts.FirstOrDefault(x => x.Id == id));
