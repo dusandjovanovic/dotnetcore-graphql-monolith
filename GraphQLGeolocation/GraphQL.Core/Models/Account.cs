@@ -7,9 +7,9 @@ namespace GraphQL.Core.Models
     {
         public Account()
         {
-            this.Friends = new List<Guid>();
-            this.AppearsIn = new List<Guid>();
-            this.SharedTags = new List<Guid>();
+            Friends = new List<Guid>();
+            AppearsIn = new List<Guid>();
+            SharedTags = new List<Guid>();
         }
         
         public Guid Id { get; set; }

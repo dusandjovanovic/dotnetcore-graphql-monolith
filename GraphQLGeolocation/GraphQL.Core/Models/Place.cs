@@ -7,7 +7,7 @@ namespace GraphQL.Core.Models
     {
         public Place()
         {
-            this.Tags = new List<Guid>();
+            Tags = new List<Guid>();
         }
         
         public Guid Id { get; set; }
