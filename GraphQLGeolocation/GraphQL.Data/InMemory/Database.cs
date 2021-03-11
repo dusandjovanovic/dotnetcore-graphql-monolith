@@ -56,11 +56,7 @@ namespace GraphQL.Data.InMemory
                 Created = created,
                 Modified = created,
             };
-            account1.Friends.Add(new Guid("2ae34c3b-c1a0-4b7b-9375-c5a221d49e68"));
-            account1.SharedTags.Add(tag1.Id);
-            account1.AppearsIn.Add(place1.Id);
-            account1.AppearsIn.Add(place2.Id);
-
+            
             var account2 = new Account()
             {
                 Id = new Guid("2ae34c3b-c1a0-4b7b-9375-c5a221d49e68"),
@@ -70,8 +66,15 @@ namespace GraphQL.Data.InMemory
                 Created = created,
                 Modified = created,
             };
-            account1.Friends.Add(account1.Id);
-            account2.AppearsIn.Add(place2.Id);
+            
+            account1.Friends.Add(account2);
+            account1.SharedTags.Add(tag1);
+            account1.AppearsIn.Add(place1);
+            account1.AppearsIn.Add(place2);
+
+          
+            account1.Friends.Add(account1);
+            account2.AppearsIn.Add(place2);
 
             Tags = new List<Tag>
             {

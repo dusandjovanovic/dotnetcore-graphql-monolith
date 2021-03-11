@@ -36,7 +36,7 @@ namespace GraphQL.Data.Repositories
             }
 
             return Task.FromResult(Database.Tags
-                .Where(x => place.Tags.Contains(x.Id)).ToList());
+                .Where(x =>  place.Tags.Any(tag => tag.Id == x.Id)).ToList());
         }
 
         public Task<Place> GetPlaceAsync(Guid id, CancellationToken cancellationToken)

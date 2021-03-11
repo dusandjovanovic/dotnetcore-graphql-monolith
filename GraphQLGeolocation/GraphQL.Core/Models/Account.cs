@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace GraphQL.Core.Models
 {
@@ -7,11 +8,12 @@ namespace GraphQL.Core.Models
     {
         public Account()
         {
-            Friends = new List<Guid>();
-            AppearsIn = new List<Guid>();
-            SharedTags = new List<Guid>();
+            Friends = new List<Account>();
+            AppearsIn = new List<Place>();
+            SharedTags = new List<Tag>();
         }
         
+        [Key]
         public Guid Id { get; set; }
         
         public string Name { get; set; }
@@ -20,11 +22,11 @@ namespace GraphQL.Core.Models
         
         public DateTime DateOfBirth { get; set; }
         
-        public List<Guid> Friends { get; set; }
+        public ICollection<Account> Friends { get; set; }
         
-        public List<Guid> AppearsIn { get; set; }
+        public ICollection<Place> AppearsIn { get; set; }
         
-        public List<Guid> SharedTags { get; set; }
+        public ICollection<Tag> SharedTags { get; set; }
 
         public DateTimeOffset Created { get; set; }
         

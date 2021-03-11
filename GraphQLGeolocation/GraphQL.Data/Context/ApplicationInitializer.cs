@@ -23,6 +23,7 @@ namespace GraphQL.Data.Context
                 Modified = created,
                 Location = new Location
                 {
+                    Id = new Guid("-1"),
                     Latitude = 63.530,
                     Longitude = 10.395
                 }
@@ -34,6 +35,7 @@ namespace GraphQL.Data.Context
                 Name = "London",
                 Location = new Location
                 {
+                    Id = new Guid("0"),
                     Latitude = 51.507,
                     Longitude = 0.112
                 }
@@ -45,6 +47,7 @@ namespace GraphQL.Data.Context
                 Name = "Trondheim",
                 Location = new Location
                 {
+                    Id = new Guid("1"),
                     Latitude = 63.430,
                     Longitude = 10.395
                 }
@@ -70,13 +73,13 @@ namespace GraphQL.Data.Context
                 Modified = created,
             };
 
-            account1.Friends.Add(account2.Id);
-            account1.SharedTags.Add(tag1.Id);
-            account1.AppearsIn.Add(place1.Id);
-            account1.AppearsIn.Add(place2.Id);
+            account1.Friends.Add(account2);
+            account1.SharedTags.Add(tag1);
+            account1.AppearsIn.Add(place1);
+            account1.AppearsIn.Add(place2);
 
-            account2.Friends.Add(account1.Id);
-            account2.AppearsIn.Add(place2.Id);
+            account2.Friends.Add(account1);
+            account2.AppearsIn.Add(place2);
             
             context.Accounts.Add(account1);
             context.Accounts.Add(account2);

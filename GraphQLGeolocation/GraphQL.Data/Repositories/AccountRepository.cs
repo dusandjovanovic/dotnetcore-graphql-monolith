@@ -36,7 +36,7 @@ namespace GraphQL.Data.Repositories
             }
             
             return Task.FromResult(Database.Accounts
-                .Where(x => account.Friends.Contains(x.Id)).ToList());
+                .Where(x => account.Friends.Any(friend => friend.Id == x.Id)).ToList());
         }
 
         public Task<List<Tag>> GetSharedTagsAsync(Account account, CancellationToken cancellationToken)
@@ -47,7 +47,7 @@ namespace GraphQL.Data.Repositories
             }
             
             return Task.FromResult(Database.Tags
-                .Where(x => account.SharedTags.Contains(x.Id)).ToList());
+                .Where(x => account.SharedTags.Any(tag => tag.Id == x.Id)).ToList());
         }
 
         public Task<List<Place>> GetAppearsInAsync(Account account, CancellationToken cancellationToken)
@@ -58,7 +58,7 @@ namespace GraphQL.Data.Repositories
             }
             
             return Task.FromResult(Database.Places
-                .Where(x => account.AppearsIn.Contains(x.Id)).ToList());
+                .Where(x => account.AppearsIn.Any(place => place.Id == x.Id)).ToList());
         }
 
         public Task<Account> GetAccountAsync(Guid id, CancellationToken cancellationToken)

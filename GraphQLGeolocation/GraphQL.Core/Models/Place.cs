@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace GraphQL.Core.Models
 {
@@ -7,9 +8,10 @@ namespace GraphQL.Core.Models
     {
         public Place()
         {
-            Tags = new List<Guid>();
+            Tags = new List<Tag>();
         }
         
+        [Key]
         public Guid Id { get; set; }
         
         public string Name { get; set; }
@@ -20,6 +22,6 @@ namespace GraphQL.Core.Models
         
         public DateTimeOffset Modified { get; set; }
         
-        public List<Guid> Tags { get; set; }
+        public ICollection<Tag> Tags { get; set; }
     }
 }
