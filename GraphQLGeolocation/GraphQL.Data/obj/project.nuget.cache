@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "fktwMekYPFzdqHFxgyp7VHCeU8MMi6Brytn7SKmz4zGxvUvk0T7bdiLUsjHiqIriyVO8MwS5RsMsmKwuGwWOCw==",
+  "dgSpecHash": "yZ3ocNt4RFSRHPSS2h4wY1PR4Q55M6s4p43vr0hD88WTvrnQCjiXq5GX8lUp9hPS1eGLBpjtqDSMT+J25n1HFQ==",
   "success": true,
   "projectFilePath": "/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.Data/GraphQL.Data.csproj",
   "expectedPackageFiles": [

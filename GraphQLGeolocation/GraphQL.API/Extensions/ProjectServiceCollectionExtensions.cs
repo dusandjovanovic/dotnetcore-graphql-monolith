@@ -14,12 +14,12 @@ namespace GraphQL.API.Extensions
         
         public static IServiceCollection AddProjectRepositories(this IServiceCollection services) =>
             services
-                .AddSingleton<IAccountRepository, AccountRepository>()
-                .AddSingleton<ITagRepository, TagRepository>()
-                .AddSingleton<IPlaceRepository, PlaceRepository>();
+                .AddScoped<IAccountRepository, AccountRepository>()
+                .AddScoped<ITagRepository, TagRepository>()
+                .AddScoped<IPlaceRepository, PlaceRepository>();
         
         public static IServiceCollection AddProjectSchemas(this IServiceCollection services) =>
             services
-                .AddSingleton<MainSchema>();
+                .AddScoped<MainSchema>();
     }
 }

@@ -82,7 +82,7 @@ namespace GraphQL.API.Extensions
             IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment) =>
             services
-                .AddSingleton<IDependencyResolver, GraphQLDependencyResolver>()
+                .AddScoped<IDependencyResolver, GraphQLDependencyResolver>()
                 .AddGraphQL(
                     options =>
                     {
@@ -93,7 +93,7 @@ namespace GraphQL.API.Extensions
                         options.EnableMetrics = graphQLOptions.EnableMetrics;
                         options.ExposeExceptions = webHostEnvironment.IsDevelopment();
                     })
-                .AddGraphTypes()
+                .AddGraphTypes(ServiceLifetime.Scoped)
                 .AddRelayGraphTypes()
                 .AddUserContextBuilder<GraphQLUserContextBuilder>()
                 .AddDataLoader()
