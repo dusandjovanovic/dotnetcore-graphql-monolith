@@ -112,3 +112,6 @@
 /Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/obj/Debug/net5.0/GraphQL.API.pdb
 /Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/obj/Debug/net5.0/GraphQL.API.genruntimeconfig.cache
 /Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/Humanizer.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Design.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

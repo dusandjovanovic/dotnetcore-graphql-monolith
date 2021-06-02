@@ -14,8 +14,8 @@ namespace GraphQL.Data.Mappings
             builder.Property(c => c.Description)
                 .HasColumnName("Description");
             
-            builder.Property(c => c.Location)
-                .HasColumnName("Location");
+            builder.Property(c => c.LocationId)
+                .HasColumnName("LocationId");
 
             builder.Property(c => c.Created)
                 .HasColumnType("Date")

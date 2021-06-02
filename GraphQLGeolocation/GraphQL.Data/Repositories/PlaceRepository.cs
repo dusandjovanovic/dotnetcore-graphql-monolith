@@ -5,16 +5,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Core.Data;
 using GraphQL.Core.Models;
+using GraphQL.Data.Context;
 using GraphQL.Data.Extensions;
-using GraphQL.Data.InMemory;
 
 namespace GraphQL.Data.Repositories
 {
     public class PlaceRepository : IPlaceRepository
     {
+        private readonly ApplicationContext _context;
+        
         public IObservable<Place> WhenPlaceCreated { get; }
         
-        public Task<Place> AddPlaceAsync(Place place, CancellationToken cancellationToken)
+        public PlaceRepository(ApplicationContext context)
+        {
+            _context = context;
+        }
+        
+        public async Task<Place> AddPlaceAsync(Place place, CancellationToken cancellationToken)
         {
             if (place is null)
             {
@@ -22,10 +29,11 @@ namespace GraphQL.Data.Repositories
             }
             
             place.Id = Guid.NewGuid();
-            Database.Places.Add(place);
+            await _context.Set<Place>().AddAsync(place, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
             // WhenPlaceCreated.OnNext(human);
 
-            return Task.FromResult(place);
+            return place;
         }
 
         public Task<List<Tag>> GetTagsAsync(Place place, CancellationToken cancellationToken)
@@ -34,19 +42,18 @@ namespace GraphQL.Data.Repositories
             {
                 throw new ArgumentNullException(nameof(place));
             }
-
-            return Task.FromResult(Database.Tags
-                .Where(x =>  place.Tags.Any(tag => tag.Id == x.Id)).ToList());
+            
+            return Task.FromResult(_context.Set<Tag>().Where(x =>  place.Tags.Any(tag => tag.Id == x.Id)).ToList());
         }
 
         public Task<Place> GetPlaceAsync(Guid id, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Places.FirstOrDefault(x => x.Id == id));
+            return Task.FromResult(_context.Set<Place>().FirstOrDefault(x => x.Id == id));
         }
 
         public Task<List<Place>> GetPlacesAsync(int? first, DateTime? createdAfter, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Places
+            return Task.FromResult(_context.Set<Place>()
                 .If(createdAfter.HasValue, x => x.Where(y => y.Created > createdAfter.Value))
                 .If(first.HasValue, x => x.Take(first.Value))
                 .ToList());
@@ -54,7 +61,7 @@ namespace GraphQL.Data.Repositories
 
         public Task<List<Place>> GetPlacesReverseAsync(int? last, DateTime? createdBefore, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Places
+            return Task.FromResult(_context.Set<Place>()
                 .If(createdBefore.HasValue, x => x.Where(y => y.Created < createdBefore.Value))
                 .If(last.HasValue, x => x.TakeLast(last.Value))
                 .ToList());
@@ -62,21 +69,21 @@ namespace GraphQL.Data.Repositories
 
         public Task<bool> GetHasNextPageAsync(int? first, DateTime? createdAfter, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Places
+            return Task.FromResult(_context.Set<Place>()
                 .If(createdAfter.HasValue, x => x.Where(y => y.Created > createdAfter.Value))
                 .Skip(first.Value).Any());
         }
 
         public Task<bool> GetHasPreviousPageAsync(int? last, DateTime? createdBefore, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Places
+            return Task.FromResult(_context.Set<Place>()
                 .If(createdBefore.HasValue, x => x.Where(y => y.Created < createdBefore.Value))
                 .SkipLast(last.Value).Any());
         }
 
         public Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Places.Count);
+            return Task.FromResult(_context.Set<Place>().Count());
         }
     }
 }

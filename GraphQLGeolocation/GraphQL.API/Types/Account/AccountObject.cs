@@ -20,6 +20,9 @@ namespace GraphQL.API.Types.Account
             Field(x => x.Name)
                 .Description("The name of the account");
             
+            Field(x => x.Email)
+                .Description("The email of the account");
+            
             Field(x => x.DateOfBirth)
                 .Description("The accounts date of birth");
 

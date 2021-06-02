@@ -1,12 +1,14 @@
 using System.IO.Compression;
 using System.Linq;
 using Boxed.AspNetCore;
+using GraphQL.API.Auth;
 using GraphQL.API.Constants;
 using GraphQL.API.Helpers;
 using GraphQL.API.Options;
 using GraphQL.Data.Context;
 using GraphQL.Server;
 using GraphQL.Server.Internal;
+using GraphQL.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -22,7 +24,8 @@ namespace GraphQL.API.Extensions
     {
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration) =>
             services
-                .AddDbContext<ApplicationContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")))
+                .AddDbContext<ApplicationContext>(options => options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("GraphQL.API")))
                 .AddDatabaseDeveloperPageExceptionFilter();
         
         public static IServiceCollection AddCustomCaching(this IServiceCollection services) =>
@@ -98,8 +101,27 @@ namespace GraphQL.API.Extensions
                 .AddUserContextBuilder<GraphQLUserContextBuilder>()
                 .AddDataLoader()
                 .AddWebSockets()
-
                 .Services
                 .AddTransient(typeof(IGraphQLExecuter<>), typeof(InstrumentingGraphQLExecutor<>));
+        
+        public static IServiceCollection AddCustomGraphQLAuthorization(
+            this IServiceCollection services, 
+            IConfiguration configuration, 
+            IWebHostEnvironment webHostEnvironment) => 
+            services
+                .AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "https://localhost:5001";
+                    options.Audience = "graphql";
+                })
+                .Services;
+        
+        public static IServiceCollection AddCustomGraphQLAuthorizationValidation(
+            this IServiceCollection services, 
+            IConfiguration configuration, 
+            IWebHostEnvironment webHostEnvironment) => 
+            services
+                .AddSingleton<IValidationRule, AuthValidationRule>();
     }
 }

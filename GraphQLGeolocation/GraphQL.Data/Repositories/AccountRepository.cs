@@ -7,13 +7,13 @@ using GraphQL.Core.Data;
 using GraphQL.Core.Models;
 using GraphQL.Data.Context;
 using GraphQL.Data.Extensions;
-using GraphQL.Data.InMemory;
 
 namespace GraphQL.Data.Repositories
 {
     public class AccountRepository : IAccountRepository
     {
         private readonly ApplicationContext _context;
+        
         public IObservable<Account> WhenAccountCreated { get; }
         
         public AccountRepository(ApplicationContext context)
@@ -30,6 +30,7 @@ namespace GraphQL.Data.Repositories
             
             account.Id = Guid.NewGuid();
             await _context.Set<Account>().AddAsync(account, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
             // WhenAccountCreated.OnNext(human);
 
             return account;
@@ -104,7 +105,7 @@ namespace GraphQL.Data.Repositories
 
         public Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Accounts.Count);
+            return Task.FromResult(_context.Set<Account>().Count());
         }
     }
 }

@@ -41,7 +41,8 @@ namespace GraphQL.API
                 .AddCustomMvcOptions(configuration)
                 .Services
                 .AddCustomGraphQL(configuration, webHostEnvironment)
-                //.AddCustomGraphQLAuthorization()
+                .AddCustomGraphQLAuthorization(configuration, webHostEnvironment)
+                .AddCustomGraphQLAuthorizationValidation(configuration, webHostEnvironment)
                 .AddProjectServices()
                 .AddProjectRepositories()
                 .AddProjectSchemas();
@@ -59,6 +60,8 @@ namespace GraphQL.API
                 .UseCors(CorsPolicyName.AllowAny)
                 .UseStaticFilesWithCacheControl()
                 .UseCustomSerilogRequestLogging()
+                .UseAuthentication()
+                .UseAuthorization()
                 .UseEndpoints(
                     builder =>
                     {

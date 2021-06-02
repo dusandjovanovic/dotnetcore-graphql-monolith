@@ -14,8 +14,8 @@ namespace GraphQL.Data.Mappings
             builder.Property(c => c.Name)
                 .HasColumnName("Name");
             
-            builder.Property(c => c.Location)
-                .HasColumnName("Location");
+            builder.Property(c => c.LocationId)
+                .HasColumnName("LocationId");
             
             builder.Property(c => c.Tags)
                 .HasColumnName("Tags");

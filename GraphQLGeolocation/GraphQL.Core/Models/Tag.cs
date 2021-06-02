@@ -10,6 +10,8 @@ namespace GraphQL.Core.Models
         
         public string Description { get; set; }
         
+        public Guid LocationId { get; set; }
+        
         public Location Location { get; set; }
         
         public DateTimeOffset Created { get; set; }

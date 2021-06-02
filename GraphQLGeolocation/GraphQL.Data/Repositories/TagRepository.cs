@@ -5,16 +5,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Core.Data;
 using GraphQL.Core.Models;
+using GraphQL.Data.Context;
 using GraphQL.Data.Extensions;
-using GraphQL.Data.InMemory;
 
 namespace GraphQL.Data.Repositories
 {
     public class TagRepository : ITagRepository
     {
+        private readonly ApplicationContext _context;
+        
         public IObservable<Tag> WhenTagCreated { get; }
         
-        public Task<Tag> AddTagAsync(Tag tag, CancellationToken cancellationToken)
+        public TagRepository(ApplicationContext context)
+        {
+            _context = context;
+        }
+        
+        public async Task<Tag> AddTagAsync(Tag tag, CancellationToken cancellationToken)
         {
             if (tag is null)
             {
@@ -22,20 +29,21 @@ namespace GraphQL.Data.Repositories
             }
             
             tag.Id = Guid.NewGuid();
-            Database.Tags.Add(tag);
+            await _context.Set<Tag>().AddAsync(tag, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
             // WhenTagCreated.OnNext(human);
 
-            return Task.FromResult(tag);
+            return tag;
         }
 
         public Task<Tag> GetTagAsync(Guid id, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Tags.FirstOrDefault(x => x.Id == id));
+            return Task.FromResult(_context.Set<Tag>().FirstOrDefault(x => x.Id == id));
         }
 
         public Task<List<Tag>> GetTagsAsync(int? first, DateTime? createdAfter, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Tags
+            return Task.FromResult(_context.Set<Tag>()
                 .If(createdAfter.HasValue, x => x.Where(y => y.Created > createdAfter.Value))
                 .If(first.HasValue, x => x.Take(first.Value))
                 .ToList());
@@ -43,7 +51,7 @@ namespace GraphQL.Data.Repositories
 
         public Task<List<Tag>> GetTagsReverseAsync(int? last, DateTime? createdBefore, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Tags
+            return Task.FromResult(_context.Set<Tag>()
                 .If(createdBefore.HasValue, x => x.Where(y => y.Created < createdBefore.Value))
                 .If(last.HasValue, x => x.TakeLast(last.Value))
                 .ToList());
@@ -51,21 +59,21 @@ namespace GraphQL.Data.Repositories
 
         public Task<bool> GetHasNextPageAsync(int? first, DateTime? createdAfter, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Tags
+            return Task.FromResult(_context.Set<Tag>()
                 .If(createdAfter.HasValue, x => x.Where(y => y.Created > createdAfter.Value))
                 .Skip(first.Value).Any());
         }
 
         public Task<bool> GetHasPreviousPageAsync(int? last, DateTime? createdBefore, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Tags
+            return Task.FromResult(_context.Set<Tag>()
                 .If(createdBefore.HasValue, x => x.Where(y => y.Created < createdBefore.Value))
                 .SkipLast(last.Value).Any());
         }
 
         public Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult(Database.Tags.Count);
+            return Task.FromResult(_context.Set<Tag>().Count());
         }
     }
 }
