@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using GraphQL.API.Graph.Type;
 using GraphQL.API.Interfaces;
-using GraphQL.API.Messages;
 using GraphQL.Core.Data;
 using GraphQL.Core.Models;
 using GraphQL.Types;
@@ -13,41 +13,32 @@ namespace GraphQL.API.Graph.Mutation
     {
         public void Activate(ObjectGraphType objectGraph, IWebHostEnvironment env, IServiceProvider sp)
         {
-            objectGraph.Field<CityType>("addCity",
+            objectGraph.Field<AccountType>("addAccount",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IntGraphType>> {Name = "countryId"},
-                    new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "cityName"},
-                    new QueryArgument<IntGraphType> {Name = "population"}
+                    new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "name"},
+                    new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "email"},
+                    new QueryArgument<NonNullGraphType<DateTimeGraphType>> {Name = "dateOfBirth"}
                 ),
                 resolve: context =>
                 {
-                    var countryId = context.GetArgument<int>("countryId");
-                    var cityName = context.GetArgument<string>("cityName");
-                    var population = context.GetArgument<int?>("population");
+                    var name = context.GetArgument<string>("name");
+                    var email = context.GetArgument<string>("email");
+                    var dateOfBirth = context.GetArgument<DateTime>("dateOfBirth");
+                    
+                    var accountRepository = (IGenericRepository<Account>) sp.GetService(typeof(IGenericRepository<Account>));
 
-                    var subscriptionServices = (ISubscriptionServices) sp.GetService(typeof(ISubscriptionServices));
-                    var cityRepository = (IGenericRepository<City>) sp.GetService(typeof(IGenericRepository<City>));
-                    var countryRepository =
-                        (IGenericRepository<Country>) sp.GetService(typeof(IGenericRepository<Country>));
-
-                    var foundCountry = countryRepository.GetById(countryId);
-
-                    var newCity = new City
+                    var newAccount = new Account
                     {
-                        Name = cityName,
-                        CountryId = countryId,
-                        Population = population
+                        Name = name,
+                        Email = email,
+                        DateOfBirth = dateOfBirth,
+                        Friends = new List<Account>(),
+                        Reviews = new List<Review>()
                     };
 
-                    var addedCity = cityRepository.Insert(newCity);
-                    subscriptionServices.CityAddedService.AddCityAddedMessage(new CityAddedMessage
-                    {
-                        CityName = addedCity.Name,
-                        CountryName = foundCountry.Name,
-                        Id = addedCity.Id,
-                        Message = "A new city added"
-                    });
-                    return addedCity;
+                    var addedAccount = accountRepository.Insert(newAccount);
+
+                    return addedAccount;
 
                 });
         }

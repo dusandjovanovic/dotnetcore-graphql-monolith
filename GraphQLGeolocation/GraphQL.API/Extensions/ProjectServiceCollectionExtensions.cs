@@ -23,6 +23,10 @@ namespace GraphQL.API.Extensions
                 .AddScoped<MainQuery>()
                 .AddScoped<CityType>()
                 .AddScoped<CountryType>()
+                .AddScoped<AccountType>()
+                .AddScoped<LocationType>()
+                .AddScoped<PlaceType>()
+                .AddScoped<ReviewType>()
                 .AddSingleton<ISubscriptionServices, SubscriptionServices>()
                 .AddScoped<MainSubscription>()
                 .AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService))
@@ -30,6 +34,7 @@ namespace GraphQL.API.Extensions
 
         public static IServiceCollection AddProjectRepositories(this IServiceCollection services) =>
             services
+                .AddScoped<AccountRepository>()
                 .AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
     }
 }

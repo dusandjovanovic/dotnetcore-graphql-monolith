@@ -17,7 +17,7 @@ namespace GraphQL.API.Graph.Type
                 IGenericRepository<Location> locationRepository = (IGenericRepository<Location>)provider.GetService(typeof(IGenericRepository<Location>));
                 return locationRepository.GetById(context.Source.LocationId);
             });
-            Field<CountryType>("city", resolve: context => {
+            Field<CityType>("city", resolve: context => {
                 IGenericRepository<City> cityRepository = (IGenericRepository<City>)provider.GetService(typeof(IGenericRepository<City>));
                 return cityRepository.GetById(context.Source.CityId);
             });

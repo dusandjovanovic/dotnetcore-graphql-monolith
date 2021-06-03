@@ -27,7 +27,7 @@ namespace GraphQL.API.Graph.Type
                     return accountRepository.GetFriends(ctx.GetArgument("id", 0));
                 });
             FieldAsync<ListGraphType<ReviewType>, IEnumerable<Review>>(
-                "friends", 
+                "reviews", 
                 resolve: ctx => {
                     ReviewRepository reviewRepository = (ReviewRepository)provider.GetService(typeof(ReviewRepository));
                     return reviewRepository.GetFromAccount(ctx.GetArgument("id", 0));

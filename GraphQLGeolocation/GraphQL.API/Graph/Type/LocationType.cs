@@ -14,10 +14,6 @@ namespace GraphQL.API.Graph.Type
             Field(x => x.Id, type: typeof(IntGraphType));
             Field(x => x.Latitude, type: typeof(FloatGraphType));
             Field(x => x.Longitude, type: typeof(FloatGraphType));
-            Field<PlaceType>("place", resolve: context => {
-                IGenericRepository<Place> placeRepository = (IGenericRepository<Place>)provider.GetService(typeof(IGenericRepository<Place>));
-                return placeRepository.GetById(context.Source.PlaceId);
-            });
         }
     }
 }

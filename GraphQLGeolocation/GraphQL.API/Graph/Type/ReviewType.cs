@@ -13,7 +13,7 @@ namespace GraphQL.API.Graph.Type
         {
             Field(x => x.Id, type: typeof(IntGraphType));
             Field(x => x.Description, type: typeof(StringGraphType));
-            Field<LocationType>("account", resolve: context => {
+            Field<AccountType>("account", resolve: context => {
                 IGenericRepository<Account> accountRepository = (IGenericRepository<Account>)provider.GetService(typeof(IGenericRepository<Account>));
                 return accountRepository.GetById(context.Source.AccountId);
             });

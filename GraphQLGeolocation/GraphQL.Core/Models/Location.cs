@@ -7,13 +7,8 @@ namespace GraphQL.Core.Models
 {
     public class Location : BaseEntity
     {
-        public float Latitude { get; set; }
+        public double Latitude { get; set; }
         
-        public float Longitude { get; set; }
-        
-        public int PlaceId { get; set; }
-        
-        [ForeignKey("PlaceId")]
-        public Place Place { get; set; }
+        public double Longitude { get; set; }
     }
 }
