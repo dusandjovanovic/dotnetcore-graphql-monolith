@@ -10,9 +10,9 @@ namespace GraphQL.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-        private readonly ApplicationContext _context;
+        protected readonly ApplicationContext _context;
 
-        private readonly DbSet<T> _entities;
+        protected readonly DbSet<T> _entities;
 
         string ErrorMessage = string.Empty;
 

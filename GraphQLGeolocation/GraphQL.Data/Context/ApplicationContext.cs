@@ -1,5 +1,4 @@
 using GraphQL.Core.Models;
-using GraphQL.Data.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 namespace GraphQL.Data.Context
@@ -18,6 +17,26 @@ namespace GraphQL.Data.Context
             });
 
             modelBuilder.Entity<Country>(entity =>
+            {
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            });
+            
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            });
+            
+            modelBuilder.Entity<Location>(entity =>
+            {
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            });
+            
+            modelBuilder.Entity<Place>(entity =>
+            {
+                entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            });
+            
+            modelBuilder.Entity<Review>(entity =>
             {
                 entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
             });
