@@ -1,7 +1,7 @@
 using Boxed.AspNetCore;
 using GraphQL.API.Constants;
 using GraphQL.API.Extensions;
-using GraphQL.API.Schemas;
+using GraphQL.API.Graph.Schema;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Server.Ui.Voyager;
@@ -28,55 +28,31 @@ namespace GraphQL.API
         public virtual void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDbContext(configuration)
-                .AddCustomCaching()
-                .AddCustomCors()
-                .AddCustomOptions(configuration)
-                .AddCustomRouting()
-                .AddCustomResponseCompression(configuration)
-                .AddCustomHealthChecks()
-                .AddHttpContextAccessor()
-                .AddServerTiming()
-                .AddControllers()
-                .AddCustomJsonOptions(webHostEnvironment)
-                .AddCustomMvcOptions(configuration)
-                .Services
-                .AddCustomGraphQL(configuration, webHostEnvironment)
-                .AddCustomGraphQLAuthorization(configuration, webHostEnvironment)
-                .AddCustomGraphQLAuthorizationValidation(configuration, webHostEnvironment)
                 .AddProjectServices()
                 .AddProjectRepositories()
-                .AddProjectSchemas();
+                .AddGraphQL(o => { o.ExposeExceptions = webHostEnvironment.IsDevelopment(); })
+                .AddGraphTypes(ServiceLifetime.Scoped)
+                .AddWebSockets().Services  
+                .AddControllers()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
         public virtual void Configure(IApplicationBuilder application) =>
             application
                 .UseIf(
-                    this.webHostEnvironment.IsDevelopment(),
-                    x => x.UseServerTiming())
-                .UseResponseCompression()
-                .UseIf(
-                    this.webHostEnvironment.IsDevelopment(),
+                    webHostEnvironment.IsDevelopment(),
                     x => x.UseDeveloperExceptionPage())
                 .UseRouting()
                 .UseCors(CorsPolicyName.AllowAny)
-                .UseStaticFilesWithCacheControl()
-                .UseCustomSerilogRequestLogging()
-                .UseAuthentication()
-                .UseAuthorization()
-                .UseEndpoints(
-                    builder =>
-                    {
-                        builder
-                            .MapHealthChecks("/status")
-                            .RequireCors(CorsPolicyName.AllowAny);
-                        builder
-                            .MapHealthChecks("/status/self", new HealthCheckOptions() {Predicate = _ => false})
-                            .RequireCors(CorsPolicyName.AllowAny);
-                    })
                 .UseWebSockets()
-                .UseGraphQLWebSockets<MainSchema>()
-                .UseGraphQL<MainSchema>()
+                .UseGraphQLWebSockets<GraphQLSchema>()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                })
                 .UseIf(
-                    this.webHostEnvironment.IsDevelopment(),
+                    webHostEnvironment.IsDevelopment(),
                     x => x
                         .UseGraphQLPlayground(new GraphQLPlaygroundOptions() {Path = "/"})
                         .UseGraphQLVoyager(new GraphQLVoyagerOptions() {Path = "/voyager"}));
