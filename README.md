@@ -120,8 +120,8 @@ Pipeline za obradu zahteva je proširen middleware delegatima.
 * `UseGraphQLPlayground`za development i testiranje APi-a, `UseGraphQLVoyager` za produkciju
 * `UseEndpoints` za dodavanje `/status` endpointa u vidu healthchecka
 * `UseAuthentication` i `UseAuthorization` za autentikaciju
-* `UseResponseCompression` za kompresiju (ima uticaj na JSON datoteke, izmedju ostalog)
-* `UseStaticFilesWithCacheControl` za serviranje statičkih fajlova za podešavanjem iz `Configuration["CacheProfiles"]` gde treba naznačiti vreme isteka
+* `UseResponseCompression` za kompresiju (primetno kod `json` datoteka npr)
+* `UseStaticFilesWithCacheControl` za serviranje statičkih datoteka sa podešavanjem iz `Configuration["CacheProfiles"]`
 
 ## Pokretanje sistema
 
