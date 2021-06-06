@@ -93,6 +93,8 @@ public static IServiceCollection AddAuthorization(this IServiceCollection servic
         }).Services;
 ```
 
+Neophodno je pribaviti token da bi se pristupilo APi-u. `https://{okta-url}/oauth2/default/v1/token` je primer endpointa za dobijanje tokena. Očekuje se da se domen `Okta` provajdera slaže sa domenom navedenim u `Configuration["Authentication"]`.
+
 ### Dependency Injection kontejner
 
 Direktorijum `/Extensions` sadrži extension metode za registraciju servisa u Dependency injection kontejner.
