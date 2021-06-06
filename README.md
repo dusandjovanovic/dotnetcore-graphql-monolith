@@ -141,6 +141,28 @@ mutation addAccount{
 }
 ```
 
+#### Dodavanje prijatelja
+
+```
+mutation removeFriend{
+  removeFriend(sourceId:1, destinationId: 2){
+    id,
+    name
+  }
+}
+```
+
+#### Brisanje prijatelja
+
+```
+mutation addFriend{
+  addFriend(sourceId:1, destinationId: 2){
+    id,
+    name
+  }
+}
+```
+
 #### Subscription na `cityAdded`
 
 Otvoriti subscription u drugom pretraživaču i pratiti promene. Prilikom izdavanja novih `query-a` za dodavanje gradova, promene će biti praćene.
