@@ -22,15 +22,15 @@ namespace GraphQL.API.Graph.Type
             Field(x => x.DateOfBirth, type: typeof(DateTimeGraphType));
             FieldAsync<ListGraphType<AccountType>, IEnumerable<Account>>(
                 "friends", 
-                resolve: ctx => {
+                resolve: context => {
                     AccountRepository accountRepository = (AccountRepository)provider.GetService(typeof(AccountRepository));
-                    return accountRepository.GetFriends(ctx.GetArgument("id", 0));
+                    return accountRepository.GetFriends(context.Source.Id);
                 });
             FieldAsync<ListGraphType<ReviewType>, IEnumerable<Review>>(
                 "reviews", 
-                resolve: ctx => {
+                resolve: context => {
                     ReviewRepository reviewRepository = (ReviewRepository)provider.GetService(typeof(ReviewRepository));
-                    return reviewRepository.GetFromAccount(ctx.GetArgument("id", 0));
+                    return reviewRepository.GetFromAccount(context.Source.Id);
                 });
         }
     }

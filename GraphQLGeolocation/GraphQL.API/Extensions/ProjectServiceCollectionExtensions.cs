@@ -35,6 +35,7 @@ namespace GraphQL.API.Extensions
         public static IServiceCollection AddProjectRepositories(this IServiceCollection services) =>
             services
                 .AddScoped<AccountRepository>()
+                .AddScoped<ReviewRepository>()
                 .AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
     }
 }

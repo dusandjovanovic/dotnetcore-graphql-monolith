@@ -41,6 +41,8 @@ namespace GraphQL.API.Graph.Mutation
                     };
 
                     var addReview = reviewRepository.Insert(newReview);
+                    foundAccount.Reviews.Add(addReview);
+                    accountRepository.Update(foundAccount);
 
                     return addReview;
                 });
