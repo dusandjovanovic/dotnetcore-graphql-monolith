@@ -14,8 +14,38 @@ GraphQL API koji se koristi za deljenje *location-based* sadržaja izmedju koris
 
 `GraphQL.Core` projekat definiše osnovne modele.
 
-`GraphQL.Data` projekat definiše sloj perzistencije. Za objektno-relaciono mapiranje se koristi `Entity Framewwork Core` i definiše jedan kontkest. Pristup entitetima konteksta različitih tipova moguć je samo kroz repozitorijume. Postoji osnovni generički repozitorijum `GenericRepository<T>` i po potrebi se proširuje dodatnim metodama.
+`GraphQL.Data` projekat definiše sloj perzistencije. 
+Za perzistenciju se koristi `mssql_server` baza podataka, dok je mapiranje ostvareno korišćenjem rešenja `EntityFrameworkCore`. Mapiranje se ostvaruje kroz jedan kontekst. Pristup entitetima konteksta različitih tipova moguć je samo kroz repozitorijume. Postoji osnovni generički repozitorijum `GenericRepository<T>` i po potrebi se proširuje dodatnim metodama.
 
+Za komunikaciju sa izvorom podataka neophodno je navesti parametre u stringu koji opisuje konekciju koji će ostvariti vezu sa *driver-om*. Ukoliko se koristi `docker` kontejner `mcr.microsoft.com/mssql/server:2019-latest` sa podrazumevanim podešavanjima parametar konekcije je `Server=localhost,1433;Database=medical;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password`.
+
+```csharp
+public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration) =>
+    services
+        .AddDbContext<ApplicationContext>(options => options.UseSqlServer(
+            configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("GraphQL.API")))
+        .AddDatabaseDeveloperPageExceptionFilter();
+```
+
+`GraphQL.API` projekat definiše API baziran na GraphQL schemi. Svi tipovi, mutacije, *subscription-i*, upiti i sama schema se nalaze u ovom projektu. Kontroler poseduje samo jednu tačku koja parsuje upite i prosledjuje upravljanje *executor-u*.
+
+## Pokretanje sistema
+
+Sistem se pokreće nakon "izgradnje" pod-projekta `GraphQL.API`.
+
+Neophodno je pre svega izvršiti migracije nad bazom podataka:
+
+`$ dotnet ef migrations add InitialCreate`
+
+`$ dotnet ef database update`
+
+Migracije se vrše iz pomenutog API pod-projekta jer je označen kao `MigrationsAssembly`, iako su konteksti napisani u domenskom pod-projektu.
+
+Na kraju, aplikativni sloj sadrži i `graphql-playground` interfejs preko koga se mogu slati upiti.
+
+![alt text][user_interface]
+
+[user_interface]: Docs/screenshot-playground.png
 
 ### Primeri `query-a`
 
