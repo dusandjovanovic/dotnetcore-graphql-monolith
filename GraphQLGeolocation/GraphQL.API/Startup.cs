@@ -31,6 +31,7 @@ namespace GraphQL.API
                 .AddCustomCaching()
                 .AddCustomCors()
                 .AddCustomOptions(configuration)
+                .AddCustomRouting()
                 .AddCustomResponseCompression(configuration)
                 .AddCustomHealthChecks()
                 .AddHttpContextAccessor()
@@ -58,7 +59,6 @@ namespace GraphQL.API
                 .UseRouting()
                 .UseCors(CorsPolicyName.AllowAny)
                 .UseStaticFilesWithCacheControl()
-                .UseCustomSerilogRequestLogging()
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(
