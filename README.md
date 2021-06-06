@@ -1,5 +1,22 @@
 # GraphQL Monolith
 
+GraphQL API koji se koristi za deljenje *location-based* sadržaja izmedju korisnika. APi podržava dodavanje zemalja, gradova, mesta, korisnika i recenzija koje se vezuju za korisnike/mesta uz tačne koordinate.
+
+## Pregled osnovne arhitekture sistema
+
+```
+/
+  Solution/
+    GraphQL.API/
+    GraphQL.Core/
+    GraphQL.Data/
+```
+
+`GraphQL.Core` projekat definiše osnovne modele.
+
+`GraphQL.Data` projekat definiše sloj perzistencije. Za objektno-relaciono mapiranje se koristi `Entity Framewwork Core` i definiše jedan kontkest. Pristup entitetima konteksta različitih tipova moguć je samo kroz repozitorijume. Postoji osnovni generički repozitorijum `GenericRepository<T>` i po potrebi se proširuje dodatnim metodama.
+
+
 ### Primeri `query-a`
 
 #### Lista država
