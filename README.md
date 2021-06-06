@@ -93,9 +93,10 @@ public static IServiceCollection AddAuthorization(this IServiceCollection servic
         }).Services;
 ```
 
-### Ostala proširenja
+### Dependency Injection kontejner
 
-Direktorijum `/Extensions` sadrži extension metode za preglednije registracije servisa u Dependency injection kontejner.
+Direktorijum `/Extensions` sadrži extension metode za registraciju servisa u Dependency injection kontejner.
+
 * `AddProjectServices` za registrovanje potrebnih servisa
 * `AddProjectRepositories` za registrovanje repozitorijuma koji se koriste za pristup entitetima konteksta
 * `AddProjectSchema` za dodavanje svih potrebnih GraphQL tipova
@@ -109,6 +110,18 @@ Direktorijum `/Extensions` sadrži extension metode za preglednije registracije 
 * `AddCustomGraphQL` za registrovanje svih potrebnih servisa GrphQL-a poput dodavanja tipova, omogućavanja socketa
 * `AddAuthorization` za dodavanje autorizacije `Okta` Single-Sign-On provajderom
 * `AddAuthorizationValidation` za validaciju autorizaije
+
+### Middleware
+
+Pipeline za obradu zahteva je proširen middleware delegatima.
+
+* `UseServerTiming` za dodavanje zaglavlja o potrebnom vremenu obrade zahteva (samo u developmentu)
+* `UseDeveloperExceptionPage` za generisanje html stranica u slučaju grešaka (samo u developmentu)
+* `UseGraphQLPlayground`za development i testiranje APi-a, `UseGraphQLVoyager` za produkciju
+* `UseEndpoints` za dodavanje `/status` endpointa u vidu healthchecka
+* `UseAuthentication` i `UseAuthorization` za autentikaciju
+* `UseResponseCompression` za kompresiju (ima uticaj na JSON datoteke, izmedju ostalog)
+* `UseStaticFilesWithCacheControl` za serviranje statičkih fajlova za podešavanjem iz `Configuration["CacheProfiles"]` gde treba naznačiti vreme isteka
 
 ## Pokretanje sistema
 
