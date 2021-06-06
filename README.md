@@ -144,8 +144,8 @@ mutation addAccount{
 #### Dodavanje prijatelja
 
 ```
-mutation removeFriend{
-  removeFriend(sourceId:1, destinationId: 2){
+mutation addFriend{
+  addFriend(sourceId:1, destinationId: 2){
     id,
     name
   }
@@ -155,8 +155,8 @@ mutation removeFriend{
 #### Brisanje prijatelja
 
 ```
-mutation addFriend{
-  addFriend(sourceId:1, destinationId: 2){
+mutation removeFriend{
+  removeFriend(sourceId:1, destinationId: 2){
     id,
     name
   }
