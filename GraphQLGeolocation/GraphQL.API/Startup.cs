@@ -1,7 +1,7 @@
 using Boxed.AspNetCore;
 using GraphQL.API.Constants;
 using GraphQL.API.Extensions;
-using GraphQL.API.Schemas;
+using GraphQL.API.Graph.Schema;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Server.Ui.Voyager;
@@ -31,7 +31,6 @@ namespace GraphQL.API
                 .AddCustomCaching()
                 .AddCustomCors()
                 .AddCustomOptions(configuration)
-                .AddCustomRouting()
                 .AddCustomResponseCompression(configuration)
                 .AddCustomHealthChecks()
                 .AddHttpContextAccessor()
@@ -41,20 +40,20 @@ namespace GraphQL.API
                 .AddCustomMvcOptions(configuration)
                 .Services
                 .AddCustomGraphQL(configuration, webHostEnvironment)
-                .AddCustomGraphQLAuthorization(configuration, webHostEnvironment)
-                .AddCustomGraphQLAuthorizationValidation(configuration, webHostEnvironment)
+                .AddAuthorization(configuration)
+                .AddAuthorizationValidation()
                 .AddProjectServices()
                 .AddProjectRepositories()
-                .AddProjectSchemas();
+                .AddProjectSchema();
 
         public virtual void Configure(IApplicationBuilder application) =>
             application
                 .UseIf(
-                    this.webHostEnvironment.IsDevelopment(),
+                    webHostEnvironment.IsDevelopment(),
                     x => x.UseServerTiming())
                 .UseResponseCompression()
                 .UseIf(
-                    this.webHostEnvironment.IsDevelopment(),
+                    webHostEnvironment.IsDevelopment(),
                     x => x.UseDeveloperExceptionPage())
                 .UseRouting()
                 .UseCors(CorsPolicyName.AllowAny)
@@ -73,10 +72,10 @@ namespace GraphQL.API
                             .RequireCors(CorsPolicyName.AllowAny);
                     })
                 .UseWebSockets()
-                .UseGraphQLWebSockets<MainSchema>()
-                .UseGraphQL<MainSchema>()
+                .UseGraphQLWebSockets<GraphQLSchema>()
+                .UseGraphQL<GraphQLSchema>()
                 .UseIf(
-                    this.webHostEnvironment.IsDevelopment(),
+                    webHostEnvironment.IsDevelopment(),
                     x => x
                         .UseGraphQLPlayground(new GraphQLPlaygroundOptions() {Path = "/"})
                         .UseGraphQLVoyager(new GraphQLVoyagerOptions() {Path = "/voyager"}));

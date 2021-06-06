@@ -1,18 +1,24 @@
+using System.Net.Http;
 using System.Security.Claims;
 using GraphQL.Validation;
+using Microsoft.AspNetCore.Http;
 
 namespace GraphQL.API.Auth
 {
     public class AuthValidationRule : IValidationRule
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        
+        public AuthValidationRule(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+        
         public INodeVisitor Validate(ValidationContext context)
         {
-            var userContext = context.UserContext as ClaimsPrincipal;
-            var authenticated = userContext?.Identity?.IsAuthenticated ?? false;
-            
             return new EnterLeaveListener(_ =>
             {
-                if (!authenticated)
+                if (!_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
                 {
                     context.ReportError(new ValidationError(
                         context.OriginalQuery,

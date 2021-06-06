@@ -21,24 +21,24 @@ namespace GraphQL.API.Migrations
 
             modelBuilder.Entity("GraphQL.Core.Models.Account", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid?>("AccountId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("AccountId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("Modified")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -47,14 +47,71 @@ namespace GraphQL.API.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("GraphQL.Core.Models.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Population")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("city");
+                });
+
+            modelBuilder.Entity("GraphQL.Core.Models.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("continent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("country");
                 });
 
             modelBuilder.Entity("GraphQL.Core.Models.Location", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
@@ -64,72 +121,67 @@ namespace GraphQL.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Location");
                 });
 
             modelBuilder.Entity("GraphQL.Core.Models.Place", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid?>("AccountId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<Guid?>("LocationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("Modified")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("CityId");
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Places");
+                    b.ToTable("Place");
                 });
 
-            modelBuilder.Entity("GraphQL.Core.Models.Tag", b =>
+            modelBuilder.Entity("GraphQL.Core.Models.Review", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid?>("AccountId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("LocationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("Modified")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("PlaceId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("PlaceId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("LocationId");
-
                     b.HasIndex("PlaceId");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("GraphQL.Core.Models.Account", b =>
@@ -139,48 +191,65 @@ namespace GraphQL.API.Migrations
                         .HasForeignKey("AccountId");
                 });
 
+            modelBuilder.Entity("GraphQL.Core.Models.City", b =>
+                {
+                    b.HasOne("GraphQL.Core.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+                });
+
             modelBuilder.Entity("GraphQL.Core.Models.Place", b =>
                 {
-                    b.HasOne("GraphQL.Core.Models.Account", null)
-                        .WithMany("AppearsIn")
-                        .HasForeignKey("AccountId");
+                    b.HasOne("GraphQL.Core.Models.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GraphQL.Core.Models.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
 
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("GraphQL.Core.Models.Tag", b =>
+            modelBuilder.Entity("GraphQL.Core.Models.Review", b =>
                 {
-                    b.HasOne("GraphQL.Core.Models.Account", null)
-                        .WithMany("SharedTags")
-                        .HasForeignKey("AccountId");
+                    b.HasOne("GraphQL.Core.Models.Account", "Account")
+                        .WithMany("Reviews")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("GraphQL.Core.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
+                    b.HasOne("GraphQL.Core.Models.Place", "Place")
+                        .WithMany("Review")
+                        .HasForeignKey("PlaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("GraphQL.Core.Models.Place", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("PlaceId");
+                    b.Navigation("Account");
 
-                    b.Navigation("Location");
+                    b.Navigation("Place");
                 });
 
             modelBuilder.Entity("GraphQL.Core.Models.Account", b =>
                 {
-                    b.Navigation("AppearsIn");
-
                     b.Navigation("Friends");
 
-                    b.Navigation("SharedTags");
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("GraphQL.Core.Models.Place", b =>
                 {
-                    b.Navigation("Tags");
+                    b.Navigation("Review");
                 });
 #pragma warning restore 612, 618
         }
