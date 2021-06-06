@@ -31,42 +31,79 @@ public static IServiceCollection AddDbContext(this IServiceCollection services, 
 
 #### Primer tipa
 
-Kratak pregled tipa entiteta koji opisuju gradove. Asinhrona polja se pribavljaju pozivom konkretnih repozitorijuma.
+Kratak pregled tipa entiteta koji opisuju mesta. Asinhrona polja (poput `location` i `city`) se pribavljaju pozivom konkretnih repozitorijuma.
 
 ```csharp
-    public class CityType : ObjectGraphType<City>
+public class PlaceType : ObjectGraphType<Place>
+  {
+      public IServiceProvider Provider { get; set; }
+
+      public PlaceType(IServiceProvider provider)
+      {
+          Field(x => x.Id, type: typeof(IntGraphType));
+          Field(x => x.Name, type: typeof(StringGraphType));
+          Field<LocationType>("location", resolve: context => {
+              IGenericRepository<Location> locationRepository = (IGenericRepository<Location>)provider.GetService(typeof(IGenericRepository<Location>));
+              return locationRepository.GetById(context.Source.LocationId);
+          });
+          Field<CityType>("city", resolve: context => {
+              IGenericRepository<City> cityRepository = (IGenericRepository<City>)provider.GetService(typeof(IGenericRepository<City>));
+              return cityRepository.GetById(context.Source.CityId);
+          });
+      }
+  }
+```
+
+#### Primer upita
+
+Upiti se koriste za pribavljanje entiteta odredjenog tipa. Tako, na primer, `place` upit može da se koristi za pribavljanje mesta gde se preko repozitorjiuma pristupa kontekstu. Pribavljena mesta se mogu dodatno filtrirati `name` argumentom za koji se očekuje poklapanje.
+
+```csharp
+public class PlaceQuery : IFieldQueryServiceItem
+{
+    public void Activate(ObjectGraphType objectGraph, IWebHostEnvironment env, IServiceProvider sp)
     {
-        public IServiceProvider Provider { get; set; }
-        public CityType(IServiceProvider provider)
-        {
-            Field(x => x.Id, type: typeof(IntGraphType));
-            Field(x => x.Name, type: typeof(StringGraphType));
-            Field(x => x.Population, type: typeof(IntGraphType));
-            Field<CountryType>("country", resolve: context => {
-                IGenericRepository<Country> countryRepository = (IGenericRepository<Country>)provider.GetService(typeof(IGenericRepository<Country>));
-                return countryRepository.GetById(context.Source.CountryId);
+        objectGraph.Field<ListGraphType<PlaceType>>("places",
+            arguments: new QueryArguments(
+                new QueryArgument<StringGraphType> {Name = "name"}
+            ),
+            resolve: context =>
+            {
+                var placeRepository = (IGenericRepository<Place>) sp.GetService(typeof(IGenericRepository<Place>));
+                var baseQuery = placeRepository.GetAll();
+                var name = context.GetArgument<string>("name");
+                return name != default(string) ? baseQuery.Where(w => w.Name.Contains(name)) : baseQuery.ToList();
             });
-        }
     }
+}
 ```
 
 #### Primer mutacije
 
-Mutacije se zadaju kao akcije ulaznih argumenata upita, može se videti ulaz mutacije za dodavanje gradova `addCity`. Po sličnoj analogiji se zadaju i upiti za čitanje, kakav je na primer `cities`.
+Mutacije se zadaju kao akcije ulaznih argumenata upita, može se videti ulaz mutacije za dodavanje mesta `addPlace`. Repozitorijumi se kao i u prethodnom slučaju probavljaju od Dependency Injection kontejnera i koriste za promenu konteksta.
 
 ```csharp
-public class AddCityMutation : IFieldMutationServiceItem
+public class AddPlaceMutation : IFieldMutationServiceItem
 {
     public void Activate(ObjectGraphType objectGraph, IWebHostEnvironment env, IServiceProvider sp)
     {
-        objectGraph.Field<CityType>("addCity",
+        objectGraph.Field<PlaceType>("addPlace",
             arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<IntGraphType>> {Name = "countryId"},
-                new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "cityName"},
-                new QueryArgument<IntGraphType> {Name = "population"}
+                new QueryArgument<NonNullGraphType<IntGraphType>> {Name = "cityId"},
+                new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "placeName"},
+                new QueryArgument<FloatGraphType> {Name = "latitude"},
+                new QueryArgument<FloatGraphType> {Name = "longitude"}
             ),
             resolve: context =>
-            ...
+            {
+                var placeName = context.GetArgument<string>("placeName");
+                var cityId = context.GetArgument<int>("cityId");
+                var latitude = context.GetArgument<double>("latitude");
+                var longitude = context.GetArgument<double>("longitude");
+
+                var placeRepository = (IGenericRepository<Place>) sp.GetService(typeof(IGenericRepository<Place>));
+                var locationRepository = (IGenericRepository<Location>) sp.GetService(typeof(IGenericRepository<Location>));
+                ...
 ```
 
 Dodatno, postoji i jedan subscription koji se koristi prilikom dodavanja gradova. Slanjem poruka preko magistrale se obaveštavaju ostali korisnici API-a da je došlo do promene - u slučaju mutacije `addCity` se tako šalje poruka `CityAddedMessage`.
