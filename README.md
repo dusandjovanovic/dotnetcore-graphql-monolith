@@ -27,7 +27,47 @@ public static IServiceCollection AddDbContext(this IServiceCollection services, 
         .AddDatabaseDeveloperPageExceptionFilter();
 ```
 
-`GraphQL.API` projekat definiše API baziran na GraphQL schemi. Svi tipovi, mutacije, *subscription-i*, upiti i sama schema se nalaze u ovom projektu. Kontroler poseduje samo jednu tačku koja parsuje upite i prosledjuje upravljanje *executor-u*.
+`GraphQL.API` projekat definiše API baziran na GraphQL schemi. Svi tipovi, mutacije, subscriptioni, upiti i sama schema se nalaze u ovom projektu. Kontroler poseduje samo jednu tačku koja parsuje upite i prosledjuje upravljanje *executoru*.
+
+#### Primer tipa
+
+Kratak pregled tipa entiteta koji opisuju gradove. Asinhrona polja se pribavljaju pozivom konkretnih repozitorijuma.
+
+```csharp
+    public class CityType : ObjectGraphType<City>
+    {
+        public IServiceProvider Provider { get; set; }
+        public CityType(IServiceProvider provider)
+        {
+            Field(x => x.Id, type: typeof(IntGraphType));
+            Field(x => x.Name, type: typeof(StringGraphType));
+            Field(x => x.Population, type: typeof(IntGraphType));
+            Field<CountryType>("country", resolve: context => {
+                IGenericRepository<Country> countryRepository = (IGenericRepository<Country>)provider.GetService(typeof(IGenericRepository<Country>));
+                return countryRepository.GetById(context.Source.CountryId);
+            });
+        }
+    }
+```
+
+#### Primer mutacije
+
+Mutacije se zadaju kao akcije ulaznih argumenata upita, može se videti ulaz mutacije za dodavanje gradova `addCity`. Po sličnoj analogiji se zadaju i upiti za čitanje, kakav je na primer `cities`.
+
+```csharp
+public class AddCityMutation : IFieldMutationServiceItem
+{
+    public void Activate(ObjectGraphType objectGraph, IWebHostEnvironment env, IServiceProvider sp)
+    {
+        objectGraph.Field<CityType>("addCity",
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<IntGraphType>> {Name = "countryId"},
+                new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "cityName"},
+                new QueryArgument<IntGraphType> {Name = "population"}
+            ),
+            resolve: context =>
+            ...
+```
 
 ## Pokretanje sistema
 
