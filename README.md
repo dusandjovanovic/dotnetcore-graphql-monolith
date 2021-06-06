@@ -69,6 +69,47 @@ public class AddCityMutation : IFieldMutationServiceItem
             ...
 ```
 
+Dodatno, postoji i jedan subscription koji se koristi prilikom dodavanja gradova. Slanjem poruka preko magistrale se obaveštavaju ostali korisnici API-a da je došlo do promene - u slučaju mutacije `addCity` se tako šalje poruka `CityAddedMessage`.
+
+`FieldService` servis vodi računa o registrovanju svih GraphQL tipova, mutacija i upita. Nije neophodno ručno registrovati nove upite, već se iz sadržaja assembly-a svi registruju, sudeći po njihovim osnovnim tipovima.
+
+### Autentikacija i autorizacija
+
+Za autentikaciju se koristi SSO provajdera `Okta` i neophodno je konfigurisati domen u podešavanjima. Pritom, validacija autentikacije se oslanja na *Bearer* JSON web-tokene koji će biti neophodni u zaglavljima.
+
+```csharp
+public static IServiceCollection AddAuthorization(this IServiceCollection services, IConfiguration configuration) =>
+    services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = OktaDefaults.ApiAuthenticationScheme;
+            options.DefaultChallengeScheme = OktaDefaults.ApiAuthenticationScheme;
+            options.DefaultSignInScheme = OktaDefaults.ApiAuthenticationScheme;
+        })
+        .AddOktaWebApi(new OktaWebApiOptions()
+        {
+            OktaDomain = configuration
+                .GetSection(nameof(ApplicationOptions.Authentication))
+                .Get<AuthenticationOptions>().Domain
+        }).Services;
+```
+
+### Ostala proširenja
+
+Direktorijum `/Extensions` sadrži extension metode za preglednije registracije servisa u Dependency injection kontejner.
+* `AddProjectServices` za registrovanje potrebnih servisa
+* `AddProjectRepositories` za registrovanje repozitorijuma koji se koriste za pristup entitetima konteksta
+* `AddProjectSchema` za dodavanje svih potrebnih GraphQL tipova
+* `AddDbContext` za povezivanje sa `mssql_server` bazom podataka
+* `AddCustomCaching` za dodavanje podrške keširanja
+* `AddCustomCors` za konfigurisanje CORS pravila
+* `AddCustomOptions` za registrovanje podešavanja iz `appsettings.json` datoteka
+* `AddCustomResponseCompression` za dodavanje servisa za kompresiju poput `gzip` podrške
+* `AddCustomRouting` za podešavanje rutiranja (lowercase rute)
+* `AddCustomHealthChecks` za dodavanje healthcheck servisa u kontejner
+* `AddCustomGraphQL` za registrovanje svih potrebnih servisa GrphQL-a poput dodavanja tipova, omogućavanja socketa
+* `AddAuthorization` za dodavanje autorizacije `Okta` Single-Sign-On provajderom
+* `AddAuthorizationValidation` za validaciju autorizaije
+
 ## Pokretanje sistema
 
 Sistem se pokreće nakon "izgradnje" pod-projekta `GraphQL.API`.
