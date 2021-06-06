@@ -118,3 +118,6 @@
 /Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/GraphQL.Primitives.dll
 /Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/System.Reactive.PlatformServices.dll
 /Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/System.Reactive.Providers.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/Okta.AspNet.Abstractions.dll
+/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/bin/Debug/net5.0/Okta.AspNetCore.dll

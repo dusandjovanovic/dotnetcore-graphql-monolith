@@ -20,5 +20,7 @@ namespace GraphQL.API.Options
         public GraphQLOptions GraphQL { get; set; }
         
         public KestrelServerOptions Kestrel { get; set; }
+        
+        public AuthenticationOptions Authentication { get; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GraphQL.API.Graph.Schema;
 using GraphQL.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GraphQL.API.Controllers
@@ -22,6 +23,7 @@ namespace GraphQL.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] GraphQLQuery query)
         {
             if (query == null) { throw new ArgumentNullException(nameof(query)); }

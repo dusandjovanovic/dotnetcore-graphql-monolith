@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7cTAvWuzR+ZT4h0teg2m5e8ErpdN7Kr852laDZXFPFPa68+u9LOhOaeglhHoAaiI9U7jbrAHtj+TM7KbmwNJDw==",
+  "dgSpecHash": "AmifhmIjJQwlfb8dS4cu7RxF5mfTS2xBxHpoj3eqH4KgQtYu86yD3ywCJyehmYDoR3jsRCtxKoYZacvmu5gKow==",
   "success": true,
   "projectFilePath": "/Users/macintosh/Documents/dotnetcore-graphql-monolith/GraphQLGeolocation/GraphQL.API/GraphQL.API.csproj",
   "expectedPackageFiles": [
@@ -27,6 +27,7 @@
     "/Users/macintosh/.nuget/packages/microsoft.applicationinsights.windowsserver.telemetrychannel/2.17.0/microsoft.applicationinsights.windowsserver.telemetrychannel.2.17.0.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.applicationinsights.hostingstartup/2.2.0/microsoft.aspnetcore.applicationinsights.hostingstartup.2.2.0.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/5.0.3/microsoft.aspnetcore.authentication.jwtbearer.5.0.3.nupkg.sha512",
+    "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.authentication.openidconnect/3.1.1/microsoft.aspnetcore.authentication.openidconnect.3.1.1.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.azureappservicesintegration/5.0.3/microsoft.aspnetcore.azureappservicesintegration.5.0.3.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.diagnostics.entityframeworkcore/5.0.3/microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.3.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/microsoft.aspnetcore.hosting/2.2.0/microsoft.aspnetcore.hosting.2.2.0.nupkg.sha512",
@@ -93,6 +94,8 @@
     "/Users/macintosh/.nuget/packages/netstandard.library/1.6.1/netstandard.library.1.6.1.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/newtonsoft.json/12.0.3/newtonsoft.json.12.0.3.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/newtonsoft.json.bson/1.0.2/newtonsoft.json.bson.1.0.2.nupkg.sha512",
+    "/Users/macintosh/.nuget/packages/okta.aspnet.abstractions/3.2.0/okta.aspnet.abstractions.3.2.0.nupkg.sha512",
+    "/Users/macintosh/.nuget/packages/okta.aspnetcore/3.5.0/okta.aspnetcore.3.5.0.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/opentelemetry/1.0.1/opentelemetry.1.0.1.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/opentelemetry.api/1.0.1/opentelemetry.api.1.0.1.nupkg.sha512",
     "/Users/macintosh/.nuget/packages/opentelemetry.exporter.console/1.0.1/opentelemetry.exporter.console.1.0.1.nupkg.sha512",

@@ -68,6 +68,7 @@
           "Microsoft.EntityFrameworkCore.Design": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Newtonsoft.Json": "12.0.3",
+          "Okta.AspNetCore": "3.5.0",
           "OpenTelemetry.Exporter.Console": "1.0.1",
           "OpenTelemetry.Extensions.Hosting": "1.0.0-rc2",
           "OpenTelemetry.Instrumentation.AspNetCore": "1.0.0-rc2",
@@ -729,6 +730,20 @@
         },
         "compile": {
           "lib/net5.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.OpenIdConnect/3.1.1": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.7.1"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": {
+            "assemblyVersion": "3.1.1.0",
+            "fileVersion": "3.100.119.61510"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": {}
         }
       },
       "Microsoft.AspNetCore.AzureAppServicesIntegration/5.0.3": {
@@ -1436,6 +1451,38 @@
         },
         "compile": {
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {}
+        }
+      },
+      "Okta.AspNet.Abstractions/3.2.0": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Tokens": "6.7.1",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Okta.AspNet.Abstractions.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Okta.AspNet.Abstractions.dll": {}
+        }
+      },
+      "Okta.AspNetCore/3.5.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
+          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "3.1.1",
+          "Okta.AspNet.Abstractions": "3.2.0"
+        },
+        "runtime": {
+          "lib/net5.0/Okta.AspNetCore.dll": {
+            "assemblyVersion": "3.5.0.0",
+            "fileVersion": "3.5.0.0"
+          }
+        },
+        "compile": {
+          "lib/net5.0/Okta.AspNetCore.dll": {}
         }
       },
       "OpenTelemetry/1.0.1": {
@@ -2805,7 +2852,8 @@
           "GraphQL.Server.Transports.AspNetCore": "3.4.0",
           "GraphQL.Server.Transports.WebSockets": "3.4.0",
           "GraphQL.Server.Ui.Playground": "3.4.0",
-          "GraphQL.Server.Ui.Voyager": "3.4.0"
+          "GraphQL.Server.Ui.Voyager": "3.4.0",
+          "Okta.AspNetCore": "3.5.0"
         },
         "runtime": {
           "GraphQL.Core.dll": {}
@@ -2826,6 +2874,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "5.0.0",
           "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Okta.AspNetCore": "3.5.0",
           "System.Reactive": "5.0.0"
         },
         "runtime": {
@@ -4690,6 +4739,13 @@
       "path": "microsoft.aspnetcore.authentication.jwtbearer/5.0.3",
       "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.5.0.3.nupkg.sha512"
     },
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect/3.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-16dSxXz0n6TVPLRdT8VqnOXu0BNxtyokQTOpYrizeFzpOvfTO+Mlgeg8thYt4qVkuNPEFluNDflzOFmzxCT6Uw==",
+      "path": "microsoft.aspnetcore.authentication.openidconnect/3.1.1",
+      "hashPath": "microsoft.aspnetcore.authentication.openidconnect.3.1.1.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.AzureAppServicesIntegration/5.0.3": {
       "type": "package",
       "serviceable": true,
@@ -5151,6 +5207,20 @@
       "sha512": "sha512-QYFyxhaABwmq3p/21VrZNYvCg3DaEoN/wUuw5nmfAf0X3HLjgupwhkEWdgfb9nvGAUIv3osmZoD3kKl4jxEmYQ==",
       "path": "newtonsoft.json.bson/1.0.2",
       "hashPath": "newtonsoft.json.bson.1.0.2.nupkg.sha512"
+    },
+    "Okta.AspNet.Abstractions/3.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YGfg7ocpIjbVKwUfSOZHgw9+m4HQS3COZmF6m72FNqeq0PMaUut4nRKn0z26OHrj+Wjuqg56Mx0ZOZZNy/u1Rg==",
+      "path": "okta.aspnet.abstractions/3.2.0",
+      "hashPath": "okta.aspnet.abstractions.3.2.0.nupkg.sha512"
+    },
+    "Okta.AspNetCore/3.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RedrsSDm6jR/1qDAZhUDUNYEOBPLWsfD6DaQ46BAdoEe0KglL0sDXcwPcFRAOuRQds3Xiicg/No7obnJXIgghQ==",
+      "path": "okta.aspnetcore/3.5.0",
+      "hashPath": "okta.aspnetcore.3.5.0.nupkg.sha512"
     },
     "OpenTelemetry/1.0.1": {
       "type": "package",

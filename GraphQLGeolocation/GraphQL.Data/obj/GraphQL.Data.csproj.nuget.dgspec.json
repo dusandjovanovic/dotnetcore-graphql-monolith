@@ -53,6 +53,10 @@
             "GraphQL.Server.Ui.Voyager": {
               "target": "Package",
               "version": "[3.4.0, )"
+            },
+            "Okta.AspNetCore": {
+              "target": "Package",
+              "version": "[3.5.0, )"
             }
           },
           "imports": [
@@ -66,6 +70,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -153,6 +160,10 @@
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
               "version": "[5.0.0, )"
+            },
+            "Okta.AspNetCore": {
+              "target": "Package",
+              "version": "[3.5.0, )"
             },
             "System.Reactive": {
               "target": "Package",

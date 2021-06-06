@@ -338,6 +338,21 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "Microsoft.AspNetCore.Authentication.OpenIdConnect/3.1.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "5.5.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.AzureAppServicesIntegration/5.0.3": {
         "type": "package",
         "dependencies": {
@@ -1305,6 +1320,34 @@
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {}
+        }
+      },
+      "Okta.AspNet.Abstractions/3.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.IdentityModel.Tokens": "6.7.1",
+          "System.IdentityModel.Tokens.Jwt": "6.7.1",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Okta.AspNet.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Okta.AspNet.Abstractions.dll": {}
+        }
+      },
+      "Okta.AspNetCore/3.5.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.1",
+          "Microsoft.AspNetCore.Authentication.OpenIdConnect": "3.1.1",
+          "Okta.AspNet.Abstractions": "3.2.0"
+        },
+        "compile": {
+          "lib/net5.0/Okta.AspNetCore.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Okta.AspNetCore.dll": {}
         }
       },
       "OpenTelemetry/1.0.1": {
@@ -3436,14 +3479,18 @@
           "GraphQL.Server.Transports.AspNetCore": "3.4.0",
           "GraphQL.Server.Transports.WebSockets": "3.4.0",
           "GraphQL.Server.Ui.Playground": "3.4.0",
-          "GraphQL.Server.Ui.Voyager": "3.4.0"
+          "GraphQL.Server.Ui.Voyager": "3.4.0",
+          "Okta.AspNetCore": "3.5.0"
         },
         "compile": {
           "bin/placeholder/GraphQL.Core.dll": {}
         },
         "runtime": {
           "bin/placeholder/GraphQL.Core.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "GraphQL.Data/1.0.0": {
         "type": "project",
@@ -3459,6 +3506,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "5.0.0",
           "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Okta.AspNetCore": "3.5.0",
           "System.Reactive": "4.4.1"
         },
         "compile": {
@@ -3840,6 +3888,20 @@
         "lib/net5.0/Microsoft.AspNetCore.Authentication.JwtBearer.xml",
         "microsoft.aspnetcore.authentication.jwtbearer.5.0.3.nupkg.sha512",
         "microsoft.aspnetcore.authentication.jwtbearer.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect/3.1.1": {
+      "sha512": "16dSxXz0n6TVPLRdT8VqnOXu0BNxtyokQTOpYrizeFzpOvfTO+Mlgeg8thYt4qVkuNPEFluNDflzOFmzxCT6Uw==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.openidconnect/3.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll",
+        "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.OpenIdConnect.xml",
+        "microsoft.aspnetcore.authentication.openidconnect.3.1.1.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.openidconnect.nuspec"
       ]
     },
     "Microsoft.AspNetCore.AzureAppServicesIntegration/5.0.3": {
@@ -5138,6 +5200,32 @@
         "lib/netstandard2.0/Newtonsoft.Json.Bson.xml",
         "newtonsoft.json.bson.1.0.2.nupkg.sha512",
         "newtonsoft.json.bson.nuspec"
+      ]
+    },
+    "Okta.AspNet.Abstractions/3.2.0": {
+      "sha512": "YGfg7ocpIjbVKwUfSOZHgw9+m4HQS3COZmF6m72FNqeq0PMaUut4nRKn0z26OHrj+Wjuqg56Mx0ZOZZNy/u1Rg==",
+      "type": "package",
+      "path": "okta.aspnet.abstractions/3.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/Okta.AspNet.Abstractions.dll",
+        "lib/netstandard2.0/Okta.AspNet.Abstractions.dll",
+        "okta.aspnet.abstractions.3.2.0.nupkg.sha512",
+        "okta.aspnet.abstractions.nuspec"
+      ]
+    },
+    "Okta.AspNetCore/3.5.0": {
+      "sha512": "RedrsSDm6jR/1qDAZhUDUNYEOBPLWsfD6DaQ46BAdoEe0KglL0sDXcwPcFRAOuRQds3Xiicg/No7obnJXIgghQ==",
+      "type": "package",
+      "path": "okta.aspnetcore/3.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/Okta.AspNetCore.dll",
+        "lib/netcoreapp3.1/Okta.AspNetCore.dll",
+        "okta.aspnetcore.3.5.0.nupkg.sha512",
+        "okta.aspnetcore.nuspec"
       ]
     },
     "OpenTelemetry/1.0.1": {
@@ -10610,6 +10698,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 5.0.3",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.3",
       "Newtonsoft.Json >= 12.0.3",
+      "Okta.AspNetCore >= 3.5.0",
       "OpenTelemetry.Exporter.Console >= 1.0.1",
       "OpenTelemetry.Extensions.Hosting >= 1.0.0-rc2",
       "OpenTelemetry.Instrumentation.AspNetCore >= 1.0.0-rc2",
@@ -10742,6 +10831,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[12.0.3, )"
+          },
+          "Okta.AspNetCore": {
+            "target": "Package",
+            "version": "[3.5.0, )"
           },
           "OpenTelemetry.Exporter.Console": {
             "target": "Package",
