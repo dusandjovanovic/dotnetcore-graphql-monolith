@@ -123,7 +123,7 @@ mutation addPlace{
 
 ```
 mutation addReview{
-  addReview(description: "Something you have to say about it", placeId: 1, cityId: 1){
+  addReview(description: "Something you have to say about it", placeId: 1, accountId: 1){
     id
     name
   }
